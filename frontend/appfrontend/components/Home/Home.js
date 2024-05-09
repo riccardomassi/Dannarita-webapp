@@ -1,7 +1,7 @@
 import Presentazione from "../Presentazione/Presentazione";
 import PhotoHome from "../PhotoHome/PhotoHome";
 
-const HomePage = () => {
+const Home = () => {
   return (
     <div className="flex flex-col">
       <Presentazione />
@@ -10,4 +10,4 @@ const HomePage = () => {
   );
 }  
 
-export default HomePage;
+export default Home;

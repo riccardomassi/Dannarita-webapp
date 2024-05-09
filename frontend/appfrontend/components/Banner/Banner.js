@@ -8,13 +8,13 @@ const Banner = () => {
       <div className="flex items-center justify-center">
         <img src="/dannarita-logo.jpeg" className=" h-16 rounded" alt="Dannarita Logo" />
       </div>
-      <div className="flex flex-col md:flex-row justify-evenly text-black text-xl mt-6">
+      <div className="flex flex-col lg:flex-row justify-evenly text-black text-xl mt-6">
         <div className="flex flex-col items-center">
           <h1 className="font-mono">Sede</h1>
           <a className="font-thin mt-2">Via Ermanno Gerosa 42</a>
           <a className="font-thin">41122 Modena</a>
         </div>
-        <div className="flex flex-col items-center mt-8 md:mt-0 font-thin">
+        <div className="flex flex-col items-center mt-8 lg:mt-0 font-thin">
           <h1 className="font-mono">Recapiti</h1>
           <a className="mt-2">+39 344 193 4048</a>
           <Link
@@ -34,7 +34,7 @@ const Banner = () => {
             </div>
           </Link>
         </div>
-        <div className="flex flex-col items-center mt-8 md:mt-0">
+        <div className="flex flex-col items-center mt-8 lg:mt-0">
           <h1 className="font-mono">Orari</h1>
           <div>
             <div className="flex flex-row font-thin mt-2">

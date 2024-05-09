@@ -16,22 +16,22 @@ const Navbar = () => {
 				<Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
 					<img src="/dannarita-logo.jpeg" className=" h-14 rounded" alt="Dannarita Logo" />
 				</Link>
-				<button onClick={toggleMenu} className="md:hidden text-black">
+				<button onClick={toggleMenu} className="lg:hidden text-black">
 					<Menu />
 				</button>
-				<div className={`w-full md:block md:w-auto ${isMenuOpen ? 'block' : 'hidden'}`} id="navbar-default">
-					<ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border rounded-lg bg-gray-100 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white">
+				<div className={`w-full lg:block lg:w-auto ${isMenuOpen ? 'block' : 'hidden'}`} id="navbar-default">
+					<ul className="font-medium flex flex-col p-4 lg:p-0 mt-4 border rounded-lg bg-gray-100 lg:flex-row lg:space-x-8 rtl:space-x-reverse lg:mt-0 lg:border-0 lg:bg-white">
 						<li>
-							<Link href="/" className="block py-2 px-3 text-white font-bold bg-amber-950 rounded md:bg-transparent md:text-orange-800 md:p-0">Home</Link>
+							<Link href="/" className="block py-2 px-3 text-white bg-amber-950 rounded lg:bg-transparent lg:text-black lg:hover:font-bold lg:hover:text-orange-800 lg:focus:font-bold lg:focus:text-orange-800 lg:p-0">Home</Link>
 						</li>
 						<li>
-							<Link href="/Acconciature" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 md:hover:bg-transparent md:hover:font-bold md:border-0 md:hover:text-orange-800 md:p-0">Acconciature</Link>
+							<Link href="/Acconciature" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 lg:hover:bg-transparent lg:hover:font-bold lg:border-0 lg:hover:text-orange-800 lg:p-0 lg:focus:text-orange-800">Acconciature</Link>
 						</li>
 						<li>
-							<Link href="/Prodotti" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 md:hover:bg-transparent md:hover:font-bold md:border-0 md:hover:text-orange-800 md:p-0">Prodotti</Link>
+							<Link href="/Prodotti" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 lg:hover:bg-transparent lg:hover:font-bold lg:border-0 lg:hover:text-orange-800 lg:p-0">Prodotti</Link>
 						</li>
 						<li>
-							<Link href="/Contatti" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 md:hover:bg-transparent md:hover:font-bold md:border-0 md:hover:text-orange-800 md:p-0">Contatti</Link>
+							<Link href="/Contatti" className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-200 lg:hover:bg-transparent lg:hover:font-bold lg:border-0 lg:hover:text-orange-800 lg:p-0">Contatti</Link>
 						</li>
 					</ul>
 				</div>

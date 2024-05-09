@@ -1,9 +1,11 @@
-const Acconciature = () => {
+import Acconciature from "@/components/Acconciature/Acconciature";
+
+const AcconciaturePage = () => {
   return (
     <div>
-      <h1>Acconciature</h1>
+      <Acconciature />
     </div>
   );
 }
 
-export default Acconciature;
+export default AcconciaturePage;
