@@ -22,7 +22,9 @@ const Navbar = () => {
 
 	const toggleMenuElement = (element) => {
 		setMenuElement(element);
-		localStorage.setItem("menuElement", element);
+		if (typeof window !== 'undefined'){
+			localStorage.setItem("menuElement", element);
+		}
 		setIsMenuOpen(false);
 	}
 
