@@ -1,9 +1,10 @@
-import Banner from "@/components/Banner/Banner";
+import Prodotti from "@/components/Prodotti/Prodotti";
 
 const ProdottiPage = () => {
   return (
-  <>
-  </>
+  <div>
+    <Prodotti />
+  </div>
   );
 }
 

@@ -1,38 +1,36 @@
 'use client';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, LocalPhone } from "@mui/icons-material";
+import Image from "next/image";
+import { Menu } from "@mui/icons-material";
 
 const Navbar = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	const [menuElement, setMenuElement] = useState(0);
+
+	const [menuElement, setMenuElement] = useState(localStorage.getItem("menuElement") || 0);
 
 	const toggleMenu = () => {
 		setIsMenuOpen(!isMenuOpen);
 	};
 
-	const toggleMenuElement = (element) => {
-		if (element === 0) {
-			setMenuElement(0);
+	useEffect(() => {
+		const savedMenuElement = localStorage.getItem("menuElement");
+		if (savedMenuElement) {
+			setMenuElement(parseInt(savedMenuElement));
 		}
-		if (element === 1) {
-			setMenuElement(1);
-		}
-		if (element === 2) {
-			setMenuElement(2);
-		}
-		if (element === 3) {
-			setMenuElement(3);
-		}
+	}, []);
 
+	const toggleMenuElement = (element) => {
+		setMenuElement(element);
+		localStorage.setItem("menuElement", element);
 		setIsMenuOpen(false);
 	}
 
 	return (
 		<nav className="bg-white border-gray-200 shadow-2xl fixed top-0 w-full z-50">
-			<div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 text-xl">
+			<div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto py-4 px-10 text-xl">
 				<Link href="/" onClick={() => toggleMenuElement(0)} className="flex items-center space-x-3 rtl:space-x-reverse">
-					<img src="/dannarita-logo.jpeg" className=" h-14 rounded" alt="Dannarita Logo" />
+					<Image src="/dannarita-logo.jpeg" height={100} width={100} alt="Dannarita Logo" />
 				</Link>
 				<button onClick={toggleMenu} className="lg:hidden text-black">
 					<Menu />

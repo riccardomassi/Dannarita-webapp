@@ -1,12 +1,13 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Facebook } from "@mui/icons-material";
 import { Instagram } from "@mui/icons-material";
 
 const Banner = () => {
   return (
-    <div className="bg-white w-full flex flex-col py-4">
+    <div className="bg-white w-full flex flex-col py-6">
       <div className="flex items-center justify-center">
-        <img src="/dannarita-logo.jpeg" className=" h-16 rounded" alt="Dannarita Logo" />
+        <Image src="/dannarita-logo.jpeg" height={100} width={130} alt="Dannarita Logo" />
       </div>
       <div className="flex flex-col lg:flex-row justify-evenly text-black text-xl mt-6">
         <div className="flex flex-col items-center">
