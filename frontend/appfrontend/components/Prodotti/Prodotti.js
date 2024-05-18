@@ -1,65 +1,25 @@
-import ProductCard from "./Card";
+'use client';
+import { useState, useEffect } from "react";
+import ProductCard from "./ProductCard";
 import Banner from "../Banner/Banner";
+import axiosInstance from "@/utils/axiosInstance";
 
 const Prodotti = () => {
-  const products = [
-    {
-      id: 1,
-      name: "Piastra per capelli professionale",
-      description: "Piastra per capelli professionale con tecnologia avanzata per risultati lisci e lucenti.",
-      price: "$50",
-      image: "/phon.jpg"
-    },
-    {
-      id: 2,
-      name: "Asciugacapelli professionale",
-      description: "Asciugacapelli professionale con diverse impostazioni di calore e velocità per asciugature rapide e risultati impeccabili.",
-      price: "$40",
-      image: "/phon.jpg"
-    },
-    {
-      id: 3,
-      name: "Shampoo idratante",
-      description: "Shampoo idratante arricchito con oli naturali per capelli sani e morbidi.",
-      price: "$15",
-      image: "/phon.jpg"
-    },
-    {
-      id: 4,
-      name: "Maschera per capelli riparatrice",
-      description: "Maschera per capelli riparatrice arricchita con vitamine e proteine per riparare e rinvigorire i capelli danneggiati.",
-      price: "$20",
-      image: "/phon.jpg"
-    },
-    {
-      id: 5,
-      name: "Piastra per capelli professionale",
-      description: "Piastra per capelli professionale con tecnologia avanzata per risultati lisci e lucenti.",
-      price: "$50",
-      image: "/phon.jpg"
-    },
-    {
-      id: 6,
-      name: "Asciugacapelli professionale",
-      description: "Asciugacapelli professionale con diverse impostazioni di calore e velocità per asciugature rapide e risultati impeccabili.",
-      price: "$40",
-      image: "/phon.jpg"
-    },
-    {
-      id: 7,
-      name: "Shampoo idratante",
-      description: "Shampoo idratante arricchito con oli naturali per capelli sani e morbidi.",
-      price: "$15",
-      image: "/phon.jpg"
-    },
-    {
-      id: 8,
-      name: "Maschera per capelli riparatrice",
-      description: "Maschera per capelli riparatrice arricchita con vitamine e proteine per riparare e rinvigorire i capelli danneggiati.",
-      price: "$20",
-      image: "/phon.jpg"
-    }
-  ];
+  const [products, setProducts] = useState([]);
+
+  const fetchProducts = () => {
+    axiosInstance.get('/')
+    .then(response => {
+      setProducts(response.data);
+    })
+    .catch(error => {
+      console.error('Errore durante la chiamata API:', error);
+    });
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
   return (
     <div className="w-full h-screen bg-amber-50 overflow-y-auto">
