@@ -16,6 +16,6 @@ def create_random_products(num_products=10):
     Product.objects.create(name=name, description=description, price=price, image=image_path)
 
 def create_superuser():
-  CustomUser.objects.create_superuser('ricky', 'massi')
+  CustomUser.objects.create_superuser('admin', 'admin')
  
 
