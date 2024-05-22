@@ -7,9 +7,7 @@ import Popup from "../Popup/Popup";
 
 const Prenotazioni = () => {
   const [prenotazioni, setPrenotazioni] = useState([]);
-  const [showPopupConferma, setShowPopupConferma] = useState(false);
   const [showPopupEliminato, setShowPopupEliminato] = useState(false);
-  const [message, setMessage] = useState('');
   const { isSuperuser } = useAuth();
   // Raggruppare le prenotazioni per utente_nome
   const groupedPrenotazioni = prenotazioni.reduce((acc, prenotazione) => {
@@ -43,6 +41,7 @@ const Prenotazioni = () => {
     axiosInstance.delete(`reservation/delete/${idPrenotazione}/`)
       .then(response => {
         if (response.status === 204) {
+          setShowPopupEliminato(true);
           fetchPrenotazioni();
         }
       }
@@ -50,23 +49,10 @@ const Prenotazioni = () => {
       .catch(error => {
         console.error('Errore durante la chiamata API:', error);
       });
-
-    setShowPopupEliminato(true);
-    setShowPopupConferma(false);
-    setMessage('Prenotazione eliminata con successo!');
   }
-
-  const onCloseConferma = () => {
-    setShowPopupConferma(false);
-  };
 
   const onCloseEliminato = () => {
     setShowPopupEliminato(false);
-  };
-
-  const handleEliminaPrenotazione = (utente, idPrenotazione) => {
-    setShowPopupConferma(true);
-    setMessage(`Sicuro di voler eliminare la prenotazione ${idPrenotazione} di ${utente}?`);
   };
 
   return (
@@ -93,16 +79,12 @@ const Prenotazioni = () => {
                   </ul>
                   {isSuperuser && (
                     <button
-                      onClick={() => handleEliminaPrenotazione(utenteNome, prenotazione.id_prenotazione)}
+                      onClick={() => eliminaPrenotazione(prenotazione.id_prenotazione)}
                       className="bg-red-500 text-white px-4 py-2 mt-4 rounded"
                     >
                       Elimina
                     </button>
                   )}
-                  {/* Mostra POPUP per conferma eliminazione */
-                    showPopupConferma && (
-                      <Popup message={message} onClose={onCloseConferma} showConferma={true} handleConferma={() => eliminaPrenotazione(prenotazione.id_prenotazione)} />
-                    )}
                 </div>
               ))}
             </div>
@@ -111,7 +93,7 @@ const Prenotazioni = () => {
       </div>
       {/* Mostra POPUP per avvenuta eliminazione */
         showPopupEliminato && (
-          <Popup message={message} onClose={onCloseEliminato} />
+          <Popup message="Prenotazione eliminata con successo!" onClose={onCloseEliminato} />
         )}
     </div>
   );
