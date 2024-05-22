@@ -1,4 +1,3 @@
-from django.core.exceptions import ValidationError
 from .models import CustomUser
 
 def custom_validation(data):

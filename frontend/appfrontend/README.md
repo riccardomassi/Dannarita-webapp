@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Progetto per il corso di Tecnologie Web
 
-## Getting Started
+## Tecnologie Utilizzate
 
-First, run the development server:
+- **Backend**: Django con Django REST Framework
+- **Frontend**: Next.js
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Backend: Django con Django REST Framework
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Descrizione
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+[Django](https://www.djangoproject.com/) è un framework web ad alto livello scritto in Python che incoraggia lo sviluppo rapido e il design pulito e pragmatico. È utilizzato per la creazione di applicazioni web robuste e scalabili.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+[Django REST Framework](https://www.django-rest-framework.org/) è una potente libreria per la creazione di API web usando Django. Fornisce un set di strumenti per la serializzazione dei dati, la validazione, l'autenticazione, l'autorizzazione e molto altro, rendendo la creazione di API web con Django un processo efficiente e flessibile.
 
-## Learn More
+### Avvio del Server
 
-To learn more about Next.js, take a look at the following resources:
+Per avviare il server backend:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Assicurati di avere Python installato sul tuo sistema.
+2. Naviga nella directory del progetto backend.
+3. Esegui il comando `pip install -r requirements.txt` per installare le dipendenze del progetto.
+4. Esegui il comando `python manage.py runserver` per avviare il server Django.
+5. Il server sarà disponibile all'indirizzo `http://127.0.0.1:8000/`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Frontend: Next.js
 
-## Deploy on Vercel
+### Descrizione
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+[Next.js](https://nextjs.org/) è un framework React che permette di costruire applicazioni web moderne con funzionalità avanzate come il rendering server-side, il routing client-side, la generazione di pagine statiche e molto altro.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Avvio del Server
+
+Per avviare il server frontend:
+
+1. Assicurati di avere Node.js e npm installati sul tuo sistema.
+2. Naviga nella directory del progetto frontend.
+3. Esegui il comando `npm install` per installare le dipendenze del progetto.
+4. Esegui il comando `npm run dev` per avviare il server Next.js.
+5. Il server sarà disponibile all'indirizzo `http://localhost:3000/`.
+
+### Configurazione dei Cookie di Sessione
+
+Poiché Django utilizza `127.0.0.1` come dominio per mantenere i cookie di sessione, assicurati che anche il frontend Next.js utilizzi lo stesso dominio per mantenere la coerenza tra le sessioni utente. Puoi farlo configurando correttamente il server Next.js affinché utilizzi lo stesso dominio.

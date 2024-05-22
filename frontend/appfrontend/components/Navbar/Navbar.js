@@ -13,6 +13,22 @@ const Navbar = () => {
 	const [username, setUsername] = useState('');
 	const router = useRouter();
 
+	const fetchUser = async () => {
+		axiosInstance.get('user/')
+			.then(response => {
+				if (response.status === 200) {
+					setIsLoggedIn(true);
+					setUsername(response.data.user['username']);
+				} else {
+					setIsLoggedIn(false);
+				}
+			})
+			.catch(error => {
+				console.error('Errore durante la chiamata API:', error);
+				setIsLoggedIn(false);
+			});
+	};
+
 	const toggleMenu = () => {
 		setIsMenuOpen(!isMenuOpen);
 	};
@@ -32,6 +48,7 @@ const Navbar = () => {
 			setMenuElement(parseInt(savedMenuElement));
 
 		}
+		fetchUser();
 	}, []);
 
 	const handleUserButtonClick = async (e) => {

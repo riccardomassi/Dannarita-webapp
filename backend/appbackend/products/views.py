@@ -7,8 +7,6 @@ from rest_framework import status
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.views import APIView
 from rest_framework.authentication import SessionAuthentication
-from datetime import timedelta
-from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import login, logout
 from .permissions import IsSuperUser

@@ -1,8 +1,6 @@
 import random
 from faker import Faker
 from products.models import Product, CustomUser
-from django.core.files import File
-from django.core.files.temp import NamedTemporaryFile
 
 fake = Faker()
 

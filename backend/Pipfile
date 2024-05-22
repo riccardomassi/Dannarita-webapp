@@ -10,7 +10,7 @@ faker = "*"
 django-cors-headers = "*"
 requests = "*"
 pillow = "*"
-djangorestframework-simplejwt = "*"
+python-dateutil = "*"
 
 [dev-packages]
 
