@@ -19,9 +19,10 @@ Per avviare il server backend:
 
 1. Assicurati di avere Python installato sul tuo sistema.
 2. Naviga nella directory del progetto backend (`backend/appbackend/`).
-3. Esegui il comando `pip install -r requirements.txt` per installare le dipendenze del progetto.
-4. Esegui il comando `python manage.py runserver` per avviare il server Django.
-5. Il server sarà disponibile all'indirizzo `http://127.0.0.1:8000/`.
+3. Esegui il comando `pipenv install` per creare un ambiente virtuale e installare le dipendenze del progetto.
+4. Esegui il comando `pipenv shell` per attivare l'ambiente virtuale.
+5. Esegui il comando `python manage.py runserver` per avviare il server Django.
+6. Il server sarà disponibile all'indirizzo `http://127.0.0.1:8000/`.
 
 ### Creazione superuser e prodotti casuali
 
