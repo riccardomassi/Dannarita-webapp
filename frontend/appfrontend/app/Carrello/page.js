@@ -1,12 +1,12 @@
 import Carrello from "@/components/Carrello/Carrello"; 
-import CheckAuth from "@/components/CheckAuth/CheckAuth"; 
+import { AuthProvider } from "@/components/AuthContext/AuthContext"; 
 
 const CarrelloPage = () => {
   return (
   <div>
-    <CheckAuth>
+    <AuthProvider>
       <Carrello />
-    </CheckAuth>
+    </AuthProvider>
   </div>
   );
 }

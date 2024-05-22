@@ -3,12 +3,15 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, AccountCircle, ShoppingCart } from "@mui/icons-material";
+import axiosInstance from "@/utils/axiosInstance";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [menuElement, setMenuElement] = useState(0);
-	const [user, setUser] = useState(null);
-	const [update, setUpdate] = useState(false);
+	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [username, setUsername] = useState('');
+	const router = useRouter();
 
 	const toggleMenu = () => {
 		setIsMenuOpen(!isMenuOpen);
@@ -18,10 +21,6 @@ const Navbar = () => {
 		setMenuElement(element);
 		localStorage.setItem("menuElement", element);
 		setIsMenuOpen(false);
-	}
-
-	const toggleUpdate = () => {
-		setUpdate(!update);
 	}
 
 	useEffect(() => {
@@ -35,43 +34,36 @@ const Navbar = () => {
 		}
 	}, []);
 
-	const fetchUser = async () => {
-    try {
-      const response = await fetch('http://127.0.0.1:8000/products/user/', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include'
-      });
-      
-      if (response.ok) {
-				setUser(true);
-      } else {
-				setUser(false);
-      }
-
-    } catch (error) {
-      console.error('Errore durante la chiamata API:', error);
-    }
-  };
-  useEffect(() => {
-    fetchUser();
-  }, [toggleUpdate]);
+	const handleUserButtonClick = async (e) => {
+		axiosInstance.get('user/')
+			.then(response => {
+				if (response.status === 200) {
+					setIsLoggedIn(true);
+					setUsername(response.data.user['username']);
+					router.push('/Prenotazioni');
+				} else {
+					setIsLoggedIn(false);
+					router.push('/Login');
+				}
+			})
+			.catch(error => {
+				console.error('Errore durante la chiamata API:', error);
+				setIsLoggedIn(false);
+				router.push('/Login');
+			});
+	};
 
 	return (
-		<nav className="bg-white border-gray-200 shadow-2xl fixed top-0 w-full z-50">
+		<nav className="bg-white border-gray-200 shadow-lg fixed top-0 w-full z-50">
 			<div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto py-4 px-10 text-xl">
 				<div className="flex flex-row items-center">
 					<Link href="/" onClick={() => toggleMenuElement(0)} className="flex items-center space-x-3 rtl:space-x-reverse mr-10">
 						<Image src="/dannarita-logo.jpeg" height={100} width={100} alt="Dannarita Logo" />
 					</Link>
-					<Link onClick={toggleUpdate} href={`${user === true ? "/Prenotazioni" : "/Register"}`} className="text-black text-lg">
-						<div className="flex items-center">
-							<AccountCircle />
-							User
-						</div>
-					</Link>
+					<button onClick={handleUserButtonClick} className="flex items-center text-black">
+						<AccountCircle />
+						{isLoggedIn === true ? username : "Login"}
+					</button>
 				</div>
 				<button onClick={toggleMenu} className="lg:hidden text-black">
 					<Menu />

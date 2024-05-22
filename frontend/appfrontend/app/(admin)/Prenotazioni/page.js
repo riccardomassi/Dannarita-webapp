@@ -1,12 +1,11 @@
 import Prenotazioni from "@/components/Prenotazioni/Prenotazioni";
-import CheckAuth from "@/components/CheckAuth/CheckAuth";
+import Sidebar from "@/components/Sidebar/Sidebar";
 
 const PrenotazioniPage = () => {
   return (
-    <div>
-      <CheckAuth>
-        <Prenotazioni />
-      </CheckAuth>
+    <div className="flex flex-row">
+      <Sidebar />
+      <Prenotazioni />
     </div>
   );
 }

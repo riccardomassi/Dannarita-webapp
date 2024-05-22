@@ -24,4 +24,5 @@ urlpatterns = [
 ]
 
 #create_superuser()
+#delete_all_products()
 #create_random_products(10)

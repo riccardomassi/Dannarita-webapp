@@ -18,22 +18,7 @@ const Carrello = () => {
   };
 
   const handlePrenotazione = () => {
-    // Creazione dell'array dei prodotti prenotati da inviare al server
-    const prodottiPrenotati = products.map(product => ({
-      prodotto_id: product.prodotto.id,  
-      quantita: product.quantita 
-    }));
-
-    // Creazione dei dati da inviare nella richiesta POST
-    const prenotazioneData = {
-      prodotti: prodottiPrenotati
-    };
-
-    axiosInstance.post('cart/reservation/', null, {
-      body : {  
-        data: prenotazioneData
-      },
-    })
+    axiosInstance.post('reservation/')
       .then(response => {
         if (response.status === 201) {
           setReload(!reload);
@@ -49,8 +34,8 @@ const Carrello = () => {
   }, [reload]);
 
   return (
-    <div className="w-full h-screen bg-amber-50 overflow-y-auto ">
-      <div className="max-w-screen-xl mx-auto flex flex-col mt-28 gap-10 p-4">
+    <div className="w-full h-screen bg-amber-50 overflow-y-auto pt-28">
+      <div className="max-w-screen-xl mx-auto flex flex-col gap-10 p-4">
         {products.map(product => (
           <CarrelloCard key={product.prodotto.id} product={product} reload={reload} setReload={setReload} />
         ))}

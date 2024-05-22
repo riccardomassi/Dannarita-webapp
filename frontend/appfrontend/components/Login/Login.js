@@ -37,7 +37,7 @@ const Login = () => {
 
   return (
     <div className="bg-amber-50 h-screen w-ful flex flex-col justify-center px-6 py-12 lg:px-8">
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+      <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <form className="space-y-6">
           <div>
             <div className="text-3xl font-bold text-black flex justify-center mb-5">

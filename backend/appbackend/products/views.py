@@ -12,12 +12,14 @@ from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import login, logout
 from .permissions import IsSuperUser
+from rest_framework.exceptions import NotFound
 
 """
 API view for registering a new user.
 """
 class UserRegisterAPIView(APIView):
 	permission_classes = [permissions.AllowAny]
+
 	def post(self, request):
 		if custom_validation(request.data):
 			clean_data = request.data
@@ -35,6 +37,7 @@ API view for logging in a user.
 class UserLoginAPIView(APIView):
 	permission_classes = [permissions.AllowAny]
 	authentication_classes = [SessionAuthentication]
+
 	def post(self, request):
 		serializer = UserLoginSerializer(data=request.data)
 		if serializer.is_valid(raise_exception=True):
@@ -47,6 +50,7 @@ API view for logging out a user.
 """
 class UserLogoutAPIView(APIView):
 	permission_classes = [permissions.AllowAny]
+
 	def post(self, request):
 		logout(request)
 		return Response(status=status.HTTP_200_OK)
@@ -57,6 +61,7 @@ API view for retrieving the authenticated user.
 class CustomUserAPIView(APIView):
 	permission_classes = [permissions.IsAuthenticated]
 	authentication_classes = [SessionAuthentication]
+
 	def get(self, request):
 		serializer = CustomUserSerializer(request.user)
 		return Response({'user': serializer.data}, status=status.HTTP_200_OK)
@@ -158,15 +163,43 @@ class PrenotaProdottiView(generics.CreateAPIView):
 	authentication_classes = [SessionAuthentication]
 
 	def post(self, request, *args, **kwargs):
-		serializer = self.get_serializer(data=request.data)
-		serializer.is_valid(raise_exception=True)
-		# Aggiunta dell'utente corrente alla prenotazione
-		serializer.save(utente=request.user)
+		carrello = get_object_or_404(Carrello, utente=request.user)
+		prodotti_data = []
 
-		# Creazione della prenotazione e salvataggio nel database
-		self.perform_create(serializer)
+		# Quando stai creando o aggiornando un'istanza di un modello, 
+		# DRF si aspetta che i campi di chiave esterna (FK) siano rappresentati 
+		# dai loro valori di chiave primaria (ID) nei dati di input.
+		
+		# Estrai i dati dei prodotti dal carrello
+		for carrello_prodotto in carrello.carrelloprodotto_set.all():
+			prodotto_data = {
+				'prodotto': carrello_prodotto.prodotto.id,
+				'quantita': carrello_prodotto.quantita
+			}
+			prodotti_data.append(prodotto_data)
 
-		return Response(serializer.data, status=status.HTTP_201_CREATED)
+		# Crea un dizionario con i dati necessari per la creazione della prenotazione
+		prenotazione_data = {
+			'utente': request.user.user_id,
+			'prodotti': prodotti_data
+		}
+
+		# Crea un'istanza del serializer con i dati estratti e il contesto della richiesta
+		serializer = PrenotazioneSerializer(data=prenotazione_data)
+
+		# Effettua la validazione dei dati
+		if serializer.is_valid(raise_exception=True):
+			# Salva la prenotazione e i prodotti associati
+			prenotazione = serializer.create(prenotazione_data)
+			if prenotazione:
+				# Pulisci il carrello dopo la creazione della prenotazione
+				carrello.prodotti.clear()
+
+				# Restituisci la risposta con i dati della prenotazione creata
+				return Response(serializer.data, status=status.HTTP_201_CREATED)
+			else:
+				# Se la validazione fallisce, restituisci gli errori di validazione
+				return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 """
 API view for retrieving the reservations of the authenticated user.
@@ -177,11 +210,38 @@ class VisualizzaPrenotazioniView(generics.ListAPIView):
 	authentication_classes = [SessionAuthentication]
 
 	def get_queryset(self):
-		return Prenotazione.objects.filter(utente=self.request.user)
+		user = self.request.user
+		if user.is_superuser:
+			return Prenotazione.objects.all()
+		else:
+			return Prenotazione.objects.filter(utente=user)
+		
+"""
+API view for deleting a reservation.
+"""
+class EliminaPrenotazioneView(generics.DestroyAPIView):
+    queryset = Prenotazione.objects.all()
+    serializer_class = PrenotazioneSerializer
+
+    def delete(self, request, *args, **kwargs):
+        pk = self.kwargs.get('pk')
+        try:
+            prenotazione = self.get_object(pk)
+            prenotazione.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Prenotazione.DoesNotExist:
+            raise NotFound(detail="Prenotazione non trovata")
+
+    def get_object(self, pk):
+        try:
+            return self.queryset.get(pk=pk)
+        except Prenotazione.DoesNotExist:
+            raise NotFound(detail="Prenotazione non trovata")
 
 
-
-
+"""
+ADMIN VIEWS START HERE
+"""
 
 """
 API view for creating a new product.
@@ -220,7 +280,7 @@ class ProductUpdateAPIView(generics.UpdateAPIView):
 		serializer = self.get_serializer(instance, data=request.data, partial=partial)
 		if serializer.is_valid():
 			self.perform_update(serializer)
-			return Response(serializer.data)
+			return Response(serializer.data, status=status.HTTP_200_OK)
 		else:
 			return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -228,7 +288,7 @@ class ProductUpdateAPIView(generics.UpdateAPIView):
 API view for deleting an existing product.
 Only accessible to admin users.
 """
-class ProductDestroyAPIView(generics.DestroyAPIView):
+class ProductDeleteAPIView(generics.DestroyAPIView):
 	queryset = Product.objects.all()
 	serializer_class = ProductSerializer
 	permission_classes = [permissions.IsAdminUser]

@@ -12,6 +12,21 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = ['id', 'name', 'description', 'price', 'image']
 
+    def create(self, clean_data):
+        product = Product.objects.create(**clean_data)
+        product.save()
+        return product
+    
+    def update(self, instance, clean_data):
+        instance.name = clean_data.get('name', instance.name)
+        instance.description = clean_data.get('description', instance.description)
+        instance.price = clean_data.get('price', instance.price)
+        image = clean_data.pop('image', None)
+        if image:
+            instance.image = image
+        instance.save()
+        return instance
+
 """
 Create a serializer class for the CustomUser registration
 """
@@ -73,6 +88,8 @@ Create a serializer class for the PrenotazioneProdotto model
 This class will be used to serialize and deserialize PrenotazioneProdotto objects
 """
 class PrenotazioneProdottoSerializer(serializers.ModelSerializer):
+    prodotto = ProductSerializer()
+
     class Meta:
         model = PrenotazioneProdotto
         fields = ['prodotto', 'quantita']
@@ -82,20 +99,31 @@ Create a serializer class for the Prenotazione model
 This class will be used to serialize and deserialize Prenotazione objects
 """
 class PrenotazioneSerializer(serializers.ModelSerializer):
-    prodotti = PrenotazioneProdottoSerializer(many=True, read_only=True)
+    prodotti = PrenotazioneProdottoSerializer(source='prenotazioneprodotto_set', many=True, read_only=True)
+    utente_nome = serializers.SerializerMethodField()
 
     class Meta:
         model = Prenotazione
-        fields = ['id_prenotazione', 'utente', 'data_prenotazione', 'prodotti']
-        read_only_fields = ['id_prenotazione', 'utente', 'data_prenotazione', 'prodotti']
+        fields = ['id_prenotazione', 'utente', 'utente_nome', 'data_prenotazione', 'prodotti']
+
+    def get_utente_nome(self, obj):
+        # Distinzione per le view PrenotaProdottiView e VisualizzaPrenotazioniView
+        # Passano due obj differenti
+        if isinstance(obj, dict):
+            return obj['utente'].username
+        return obj.utente.username if obj.utente else None
 
     def create(self, clean_data):
-        prodotti = clean_data.pop('prodotti')
-        prenotazione = Prenotazione.objects.create(**clean_data)
-        for prodotto in prodotti:
-            PrenotazioneProdotto.objects.create(prenotazione=prenotazione, **prodotto)
+        utente_id = clean_data.pop('utente')
+        utente = CustomUser.objects.get(pk=utente_id)
+        prodotti_data = clean_data.pop('prodotti')
+
+        # Controllo che la prenotazione contenga almeno un prodotto
+        if not prodotti_data:
+            raise ValidationError('Una prenotazione deve contenere almeno un prodotto.')
+        
+        prenotazione = Prenotazione.objects.create(utente=utente,**clean_data)
+        for prodotto_data in prodotti_data:
+            prodotto = Product.objects.get(pk=prodotto_data['prodotto'])
+            PrenotazioneProdotto.objects.create(prenotazione=prenotazione, prodotto=prodotto, quantita=prodotto_data['quantita'])
         return prenotazione
-
-    
-
-

@@ -8,6 +8,8 @@ const ProductCard = ({ product }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
+  // Immagine di fallback
+  const noImage = '/no-image.jpg';
   const router = useRouter();
 
   const addToCart = (productID) => {
@@ -52,9 +54,9 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="h-[700px] w-[400px] mt-28 rounded overflow-hidden shadow-lg bg-orange-100">
+    <div className="h-[700px] w-[400px] rounded overflow-hidden shadow-lg bg-orange-100">
       <div className="relative h-96 m-2">
-        <Image src={product.image} alt={product.name} layout="fill" objectFit="cover" />
+        <Image src={product.image ? product.image : noImage} alt={product.name} layout="fill" objectFit="cover" />
       </div>
       <div className="px-6 py-4">
         <div className="font-bold text-xl mb-2 text-gray-800">{product.name}</div>

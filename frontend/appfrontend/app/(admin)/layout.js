@@ -1,16 +1,10 @@
-import { Inter } from "next/font/google";
-import Navbar from "@/components/Navbar/Navbar";
-
-const inter = Inter({ subsets: ["latin"] });
+import { AuthProvider } from "@/components/AuthContext/AuthContext";
 
 export default function AdminLayout({ children }) {
 
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <Navbar />
-        {children}
-      </body>
-    </html>
+    <AuthProvider>
+      {children}
+    </AuthProvider>
   );
 }

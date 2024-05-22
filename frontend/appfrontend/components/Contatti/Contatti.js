@@ -7,7 +7,7 @@ const Contatti = () => {
   return (
     <div className="h-screen text-black bg-amber-50 flex flex-col overflow-y-auto">
       {/* Contattaci */}
-      <div className="mt-40 text-center">
+      <div className="pt-44 text-center">
         <div className="text-3xl font-bold">Contattaci per prendere appuntamento</div>
         <div className="bg-amber-100 rounded-full inline-flex items-center shadow py-3 px-5 mt-4">
           <div className="scale-[1.3] inline-block">
