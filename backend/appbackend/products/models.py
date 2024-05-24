@@ -2,6 +2,16 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 
+"""
+Represents a product in the system.
+
+Attributes:
+  id (AutoField): The primary key for the product.
+  name (CharField): The name of the product.
+  description (TextField): The description of the product.
+  price (DecimalField): The price of the product.
+  image (ImageField): The image of the product.
+"""
 class Product(models.Model):
   id = models.AutoField(primary_key=True)
   name = models.CharField(max_length=100)
@@ -12,6 +22,15 @@ class Product(models.Model):
   def __str__(self):
     return self.name
 
+"""
+Custom user manager for the CustomUser model.
+
+This manager provides methods to create regular users and superusers.
+
+Methods:
+  create_user(username, password=None): Creates a regular user with the given username and password.
+  create_superuser(username, password=None): Creates a superuser with the given username and password.
+"""
 class CustomUserManager(BaseUserManager):
   def create_user(self, username, password=None):
     if not username:
@@ -30,6 +49,15 @@ class CustomUserManager(BaseUserManager):
     user.save()
     return user
 
+"""
+Represents a custom user in the system.
+
+Attributes:
+  user_id (AutoField): The primary key for the user.
+  username (CharField): The username of the user.
+  is_superuser (BooleanField): Indicates if the user is a superuser.
+  is_staff (BooleanField): Indicates if the user is a staff member.
+"""
 class CustomUser(AbstractBaseUser, PermissionsMixin):
   user_id = models.AutoField(primary_key=True)
   username = models.CharField(max_length=150, unique=True)
@@ -43,7 +71,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
   def __str__(self):
       return self.username
-  
+
+"""
+Represents a shopping cart in the system.
+
+Attributes:
+  utente (OneToOneField): The user associated with the shopping cart.
+  prodotti (ManyToManyField): The products added to the shopping cart.
+"""
 class Carrello(models.Model):
   utente = models.OneToOneField('CustomUser', on_delete=models.CASCADE)
   prodotti = models.ManyToManyField('Product', through='CarrelloProdotto')
@@ -51,6 +86,14 @@ class Carrello(models.Model):
   def __str__(self):
     return f"Carrello di {self.utente.username}"
 
+"""
+Represents a product in a shopping cart.
+
+Attributes:
+  carrello (ForeignKey): The shopping cart the product belongs to.
+  prodotto (ForeignKey): The product in the shopping cart.
+  quantita (PositiveIntegerField): The quantity of the product in the shopping cart.
+"""
 class CarrelloProdotto(models.Model):
   carrello = models.ForeignKey('Carrello', on_delete=models.CASCADE)
   prodotto = models.ForeignKey('Product', on_delete=models.CASCADE)
@@ -59,6 +102,15 @@ class CarrelloProdotto(models.Model):
   class Meta:
     unique_together = ('carrello', 'prodotto')
 
+"""
+Represents a reservation in the system.
+
+Attributes:
+  id_prenotazione (AutoField): The primary key for the reservation.
+  utente (ForeignKey): The user who made the reservation.
+  data_prenotazione (DateTimeField): The date and time when the reservation was made.
+  prodotti (ManyToManyField): The products included in the reservation.
+"""
 class Prenotazione(models.Model):
   id_prenotazione = models.AutoField(primary_key=True)
   utente = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
@@ -68,6 +120,14 @@ class Prenotazione(models.Model):
   def __str__(self):
     return f"Prenotazione {self.id_prenotazione} di {self.utente.username}"
 
+"""
+Represents a product in a reservation.
+
+Attributes:
+  prenotazione (ForeignKey): The reservation the product belongs to.
+  prodotto (ForeignKey): The product in the reservation.
+  quantita (PositiveIntegerField): The quantity of the product in the reservation.
+"""
 class PrenotazioneProdotto(models.Model):
   prenotazione = models.ForeignKey(Prenotazione, on_delete=models.CASCADE)
   prodotto = models.ForeignKey(Product, on_delete=models.CASCADE)

@@ -4,9 +4,15 @@ from products.models import Product, CustomUser
 
 fake = Faker()
 
+"""
+Create a function to delete all products
+"""
 def delete_all_products():
   Product.objects.all().delete()
 
+"""
+Create a function to create random products
+"""
 def create_random_products(num_products=10):
   for _ in range(num_products):
     name = fake.company()
@@ -15,6 +21,9 @@ def create_random_products(num_products=10):
     image_path = "static/phon.jpg"
     Product.objects.create(name=name, description=description, price=price, image=image_path)
 
+"""
+Create a function to create a superuser
+"""
 def create_superuser():
   CustomUser.objects.create_superuser('admin', 'admin')
  
