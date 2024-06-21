@@ -28,17 +28,16 @@ Per avviare il server backend:
 
 Per creare un superuser
 
-1. Guardare la funzione `create_superuser()` nel file `initcmds.py`.
-2. Chiamare la funzione in `urls.py`, dovrebbe già essere lì ma commentata.
-3. Una volta effettuata la chiamata alla funzione, commentarla, di modo che non continui a cercare di creare un superuser all'infinito.
+1. lanciare da riga di comando `python manage.py createsuperuser`
+2. inserire username e password
 
 Per creare prodotti casuali
 
 1. Guardare le funzioni `delete_all_products()`, `create_random_products(num_products=10)` nel file `initcmds.py`.
 2. La funzione `delete_all_products()` elimina tutti i prodotti nel database.
 3. La funzione `create_random_products(num_products=10)` crea 10 prodotti casuali nel database.
-4. Chiamare la funzioni in `urls.py`, dovrebbero già essere lì ma commentate.
-5. Una volta effettuate le chiamate alla funzioni, commentarle, di modo che non continuino ad eliminare e creare prodotti all'infinito.
+4. Le funzioni vengono chiamate una sola volta all'avvio del server Django, all'interno del file `appbackend/urls.py`.
+5. Vengono eliminati tutti i prodotti e creati 10 nuovi prodotti casuali ogni volta che il server viene riavviato.
 
 
 ## Frontend: Next.js

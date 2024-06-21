@@ -20,7 +20,7 @@ class Product(models.Model):
   image = models.ImageField(upload_to='static/', null=True, blank=True)
 
   def __str__(self):
-    return self.name
+    return self.name 
 
 """
 Custom user manager for the CustomUser model.
@@ -65,7 +65,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
   is_staff = models.BooleanField(default=False)
 
   USERNAME_FIELD = 'username'
-  REQUIRED_FIELDS = ['']
 
   objects = CustomUserManager()
 
@@ -85,6 +84,9 @@ class Carrello(models.Model):
 
   def __str__(self):
     return f"Carrello di {self.utente.username}"
+  
+  class Meta:
+    verbose_name_plural = 'Carrelli'
 
 """
 Represents a product in a shopping cart.
@@ -101,6 +103,7 @@ class CarrelloProdotto(models.Model):
 
   class Meta:
     unique_together = ('carrello', 'prodotto')
+    verbose_name_plural = 'Prodotti Carrello'
 
 """
 Represents a reservation in the system.
@@ -119,6 +122,9 @@ class Prenotazione(models.Model):
 
   def __str__(self):
     return f"Prenotazione {self.id_prenotazione} di {self.utente.username}"
+  
+  class Meta:
+    verbose_name_plural = 'Prenotazioni'
 
 """
 Represents a product in a reservation.
@@ -135,6 +141,8 @@ class PrenotazioneProdotto(models.Model):
 
   class Meta:
     unique_together = ('prenotazione', 'prodotto')
+    verbose_name_plural = "Prodotti Prenotazione"
+
 
 
   

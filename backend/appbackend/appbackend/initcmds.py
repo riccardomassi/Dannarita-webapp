@@ -20,11 +20,5 @@ def create_random_products(num_products=10):
     price = round(random.uniform(10, 1000), 2)
     image_path = "static/phon.jpg"
     Product.objects.create(name=name, description=description, price=price, image=image_path)
-
-"""
-Create a function to create a superuser
-"""
-def create_superuser():
-  CustomUser.objects.create_superuser('admin', 'admin')
  
 

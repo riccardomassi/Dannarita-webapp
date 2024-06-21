@@ -2,10 +2,12 @@
 import { useState, useEffect } from "react";
 import axiosInstance from "@/utils/axiosInstance";
 import CarrelloCard from "./CarrelloCard";
+import Popup from "../Popup/Popup";
 
 const Carrello = () => {
   const [products, setProducts] = useState([]);
   const [reload, setReload] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
 
   const fetchProducts = () => {
     axiosInstance.get('cart/')
@@ -22,6 +24,7 @@ const Carrello = () => {
       .then(response => {
         if (response.status === 201) {
           setReload(!reload);
+          setShowPopup(true);
         }
       })
       .catch(error => {
@@ -32,6 +35,10 @@ const Carrello = () => {
   useEffect(() => {
     fetchProducts();
   }, [reload]);
+
+  const onClose = () => {
+    setShowPopup(false);
+  }
 
   return (
     <div className="w-full h-screen bg-amber-50 overflow-y-auto pt-28">
@@ -51,6 +58,12 @@ const Carrello = () => {
           </button>
         </div>
       </div>
+      {showPopup &&
+        <Popup
+          message="Prenotazione effettuata con successo!"
+          onClose={onClose}
+        />
+      }
     </div>
   );
 };

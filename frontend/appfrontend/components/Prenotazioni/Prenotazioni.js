@@ -59,42 +59,46 @@ const Prenotazioni = () => {
     <div className="h-screen w-full flex justify-center overflow-y-auto bg-amber-50 pt-28 text-black text-2xl">
       <div className="ml-72">
         <div className="grid grid-cols-1 gap-8">
-          {Object.keys(groupedPrenotazioni).map((utenteNome) => (
-            <div key={utenteNome}>
-              {isSuperuser && (
-                <div className="font-bold text-2xl mb-4">Utente: {utenteNome}</div>
-              )}
-              {groupedPrenotazioni[utenteNome].map((prenotazione) => (
-                <div key={prenotazione.id_prenotazione} className="border p-4 rounded-lg mb-4">
-                  <div className="font-bold">Prenotazione {prenotazione.id_prenotazione}</div>
-                  <div className="mt-2">Data Prenotazione: {formatData(prenotazione.data_prenotazione)}</div>
-                  <ul className="mt-4">
-                    {prenotazione.prodotti.map((prodotto) => (
-                      <li key={prodotto.prodotto.id} className="mb-2">
-                        <div className="font-semibold">{prodotto.prodotto.name}</div>
-                        <div className="text-gray-600">Prezzo: {prodotto.prodotto.price} €</div>
-                        <div className="text-gray-600">Quantità: {prodotto.quantita}</div>
-                      </li>
-                    ))}
-                  </ul>
-                  {isSuperuser && (
-                    <button
-                      onClick={() => eliminaPrenotazione(prenotazione.id_prenotazione)}
-                      className="bg-red-500 text-white px-4 py-2 mt-4 rounded"
-                    >
-                      Elimina
-                    </button>
-                  )}
-                </div>
-              ))}
-            </div>
-          ))}
+          {prenotazioni.length === 0 ? (
+            <div className="text-center font-bold text-2xl">Nessuna Prenotazione</div>
+          ) : (
+            Object.keys(groupedPrenotazioni).map((utenteNome) => (
+              <div key={utenteNome}>
+                {isSuperuser && (
+                  <div className="font-bold text-2xl mb-4">Utente: {utenteNome}</div>
+                )}
+                {groupedPrenotazioni[utenteNome].map((prenotazione) => (
+                  <div key={prenotazione.id_prenotazione} className="border p-4 rounded-lg mb-4">
+                    <div className="font-bold">Prenotazione {prenotazione.id_prenotazione}</div>
+                    <div className="mt-2">Data Prenotazione: {formatData(prenotazione.data_prenotazione)}</div>
+                    <ul className="mt-4">
+                      {prenotazione.prodotti.map((prodotto) => (
+                        <li key={prodotto.prodotto.id} className="mb-2">
+                          <div className="font-semibold">{prodotto.prodotto.name}</div>
+                          <div className="text-gray-600">Prezzo: {prodotto.prodotto.price} €</div>
+                          <div className="text-gray-600">Quantità: {prodotto.quantita}</div>
+                        </li>
+                      ))}
+                    </ul>
+                    {isSuperuser && (
+                      <button
+                        onClick={() => eliminaPrenotazione(prenotazione.id_prenotazione)}
+                        className="bg-red-500 text-white px-4 py-2 mt-4 rounded"
+                      >
+                        Elimina
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ))
+          )}
         </div>
       </div>
-      {/* Mostra POPUP per avvenuta eliminazione */
-        showPopupEliminato && (
-          <Popup message="Prenotazione eliminata con successo!" onClose={onCloseEliminato} />
-        )}
+      {/* Mostra POPUP per avvenuta eliminazione */}
+      {showPopupEliminato && (
+        <Popup message="Prenotazione eliminata con successo!" onClose={onCloseEliminato} />
+      )}
     </div>
   );
 };

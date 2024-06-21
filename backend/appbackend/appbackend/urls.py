@@ -16,13 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from .initcmds import create_random_products, delete_all_products, create_superuser
+from .initcmds import create_random_products, delete_all_products
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('products/', include('products.urls')),
 ]
 
-#create_superuser()
-#delete_all_products()
-#create_random_products(10)
+initial = True
+if initial:
+    delete_all_products()
+    create_random_products(10)
+    initial = False

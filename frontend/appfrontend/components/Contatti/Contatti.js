@@ -67,8 +67,16 @@ const Contatti = () => {
               <a className="ml-[165px]">Chiuso</a>
             </div>
             <div className="flex flex-row mt-2">
-              <a>Mar - Sab</a>
-              <a className="ml-20">09:00 - 18:00</a>
+              <a>Mar - Gio</a>
+              <a className="ml-[92px]">09:00 - 18:00</a>
+            </div>
+            <div className="flex flex-row mt-2">
+              <a>Ven</a>
+              <a className="ml-36">09:00 - 19:00</a>
+            </div>
+            <div className="flex flex-row mt-2">
+              <a>Sab</a>
+              <a className="ml-36">09:00 - 18:00</a>
             </div>
             <div className="flex flex-row mt-2">
               <a className="flex justify-start">Domenica</a>

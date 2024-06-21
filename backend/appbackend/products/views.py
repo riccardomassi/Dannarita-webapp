@@ -218,23 +218,23 @@ class VisualizzaPrenotazioniView(generics.ListAPIView):
 API view for deleting a reservation.
 """
 class EliminaPrenotazioneView(generics.DestroyAPIView):
-    queryset = Prenotazione.objects.all()
-    serializer_class = PrenotazioneSerializer
+	queryset = Prenotazione.objects.all()
+	serializer_class = PrenotazioneSerializer
 
-    def delete(self, request, *args, **kwargs):
-        pk = self.kwargs.get('pk')
-        try:
-            prenotazione = self.get_object(pk)
-            prenotazione.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        except Prenotazione.DoesNotExist:
-            raise NotFound(detail="Prenotazione non trovata")
+	def delete(self, request, *args, **kwargs):
+		pk = self.kwargs.get('pk')
+		try:
+			prenotazione = self.get_object(pk)
+			prenotazione.delete()
+			return Response(status=status.HTTP_204_NO_CONTENT)
+		except Prenotazione.DoesNotExist:
+			raise NotFound(detail="Prenotazione non trovata")
 
-    def get_object(self, pk):
-        try:
-            return self.queryset.get(pk=pk)
-        except Prenotazione.DoesNotExist:
-            raise NotFound(detail="Prenotazione non trovata")
+	def get_object(self, pk):
+		try:
+			return self.queryset.get(pk=pk)
+		except Prenotazione.DoesNotExist:
+			raise NotFound(detail="Prenotazione non trovata")
 
 
 """
