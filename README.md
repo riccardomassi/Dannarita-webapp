@@ -37,7 +37,7 @@ Per creare prodotti casuali
 2. La funzione `delete_all_products()` elimina tutti i prodotti nel database.
 3. La funzione `create_random_products(num_products=10)` crea 10 prodotti casuali nel database.
 4. Le funzioni vengono chiamate una sola volta all'avvio del server Django, all'interno del file `appbackend/urls.py`.
-5. Vengono eliminati tutti i prodotti e creati 10 nuovi prodotti casuali ogni volta che il server viene riavviato.
+5. Vengono eliminati tutti i prodotti e creati 10 nuovi prodotti casuali ogni volta che il server viene riavviato. Per impedire che ciò accada, una volta avviato il server commentare le due funzioni.
 
 
 ## Frontend: Next.js

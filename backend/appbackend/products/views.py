@@ -27,7 +27,7 @@ class UserRegisterAPIView(APIView):
 				if user:
 					return Response(serializer.data, status=status.HTTP_201_CREATED)
 			return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-		return Response({'error': 'username already exists'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+		return Response({'error': 'username già esistente'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 """
 API view for logging in a user.
@@ -38,10 +38,13 @@ class UserLoginAPIView(APIView):
 
 	def post(self, request):
 		serializer = UserLoginSerializer(data=request.data)
-		if serializer.is_valid(raise_exception=True):
-			user = serializer.check_user(request.data)
-			login(request, user)
-			return Response(serializer.data, status=status.HTTP_200_OK)
+		try:
+			if serializer.is_valid(raise_exception=True):
+				user = serializer.check_user(request.data)
+				login(request, user)
+				return Response(serializer.data, status=status.HTTP_200_OK)
+		except Exception as e:
+			return Response({'detail': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
 """
 API view for logging out a user.

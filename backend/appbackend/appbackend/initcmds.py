@@ -1,6 +1,6 @@
 import random
 from faker import Faker
-from products.models import Product, CustomUser
+from products.models import Product
 
 fake = Faker()
 

@@ -25,7 +25,7 @@ const Register = () => {
     })
       .then(response => {
         if (response.status === 200) {
-          router.push('/');
+          router.push('/Prenotazioni');
         } else {
           router.push('/Login');
         }
@@ -55,6 +55,12 @@ const Register = () => {
       });
   };
 
+  const handleEnterPressed = (event) => {
+    if (event.key === 'Enter') {
+      fetchRegister();
+    }
+  }
+
   return (
     <div className="bg-amber-50 h-screen w-ful flex flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -71,7 +77,7 @@ const Register = () => {
             </div>
             {
               /* messaggio di errore: username already exists */
-              error == "username already exists" && <div className="text-red-500 text-sm">{error}</div>
+              error && <div className="text-red-500 text-sm">{error}</div>
             }
           </div>
 
@@ -82,7 +88,7 @@ const Register = () => {
               </label>
             </div>
             <div className="mt-2 mb-2">
-              <input id="password" name="password" type="password" value={password} onChange={handlePasswordChange} required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6 p-3" />
+              <input id="password" name="password" type="password" onKeyDown={handleEnterPressed} value={password} onChange={handlePasswordChange} required className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-orange-600 sm:text-sm sm:leading-6 p-3" />
             </div>
             <Link href="/Login" className="font-semibold text-orange-600 hover:text-orange-500">
               Hai già un account?

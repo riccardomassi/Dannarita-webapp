@@ -60,7 +60,7 @@ const Prenotazioni = () => {
       <div className="ml-72">
         <div className="grid grid-cols-1 gap-8">
           {prenotazioni.length === 0 ? (
-            <div className="text-center font-bold text-2xl">Nessuna Prenotazione</div>
+            <div className="font-bold text-2xl">Nessuna Prenotazione</div>
           ) : (
             Object.keys(groupedPrenotazioni).map((utenteNome) => (
               <div key={utenteNome}>

@@ -23,8 +23,5 @@ urlpatterns = [
     path('products/', include('products.urls')),
 ]
 
-initial = True
-if initial:
-    delete_all_products()
-    create_random_products(10)
-    initial = False
+delete_all_products()
+create_random_products(10)
