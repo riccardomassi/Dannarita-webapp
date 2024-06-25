@@ -8,9 +8,9 @@ const Acconciature = () => {
           <div className="bg-black bg-opacity-10 py-6 px-10 rounded-br-2xl rounded-tl-2xl font-serif">
             <p>La bellezza dei capelli è la nostra vocazione: il personale altamente qualificato e specializzato in acconciature,</p>
             <p>trattamenti di rigenerazione, tagli e colorazioni, vi accoglierà in un ambiente moderno e rilassante,</p>
-            <p>dotato di tecnologie all'avanguardia e di prodotti di elevata qualità.</p>
+            <p>dotato di tecnologie all&apos;avanguardia e di prodotti di elevata qualità.</p>
             <br></br>
-            <p>Grazie alla passione e all'attenzione per i dettagli, ci preoccupiamo di offrire un servizio personalizzato,</p>
+            <p>Grazie alla passione e all&apos;attenzione per i dettagli, ci preoccupiamo di offrire un servizio personalizzato,</p>
             <p>in grado di soddisfare le diverse esigenze di ogni cliente.</p>
           </div>
         </div>
