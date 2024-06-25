@@ -6,7 +6,7 @@ const PhotoHome = () => {
       <div className="flex justify-center mt-6 mb-6 space-x-4">
         <Image
           src="/home1.jpg"
-          alt="Descrizione Immagine 2"
+          alt="Immagine 1"
           layout='responisve'
           width={300}
           height={200}
@@ -15,7 +15,7 @@ const PhotoHome = () => {
         />
         <Image
           src="/home2.jpg"
-          alt="Descrizione Immagine 3"
+          alt="Immagine 2"
           layout='responisve'
           width={450}
           height={200}
@@ -24,7 +24,7 @@ const PhotoHome = () => {
         />
         <Image
           src="/home3.jpg"
-          alt="Descrizione Immagine 3"
+          alt="Immagine 3"
           layout='responisve'
           width={300}
           height={200}
@@ -35,7 +35,7 @@ const PhotoHome = () => {
       <div className="flex justify-center space-x-4 mb-6">
         <Image
           src="/home4.jpg"
-          alt="Descrizione Immagine 1"
+          alt="Immagine 4"
           layout='responisve'
           width={300}
           height={200}
@@ -44,7 +44,7 @@ const PhotoHome = () => {
         />
         <Image
           src="/home5.jpg"
-          alt="Descrizione Immagine 2"
+          alt="Immagine 5"
           layout='responisve'
           width={450}
           height={200}
@@ -53,7 +53,7 @@ const PhotoHome = () => {
         />
         <Image
           src="/home6.jpg"
-          alt="Descrizione Immagine 3"
+          alt="Immagine 6"
           layout='responisve'
           width={300}
           height={200}
