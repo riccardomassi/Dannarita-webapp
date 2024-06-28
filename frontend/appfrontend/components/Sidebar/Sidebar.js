@@ -3,8 +3,8 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { AccountCircle } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
 import { useAuth } from "../AuthContext/AuthContext";
+import axiosInstance from "@/utils/axiosInstance";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -30,7 +30,19 @@ const Sidebar = () => {
     };
   }, [isOpen]);
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
+    axiosInstance.post('logout/')
+      .then(response => {
+        if (response.status === 200) {
+          router.push('/Login');
+        }
+      })
+      .catch(error => {
+        console.error('Errore durante il logout:', error.response.data);
+      });
+  };
+
+  /*const handleLogout = async () => {
     const csrftoken = Cookies.get('csrftoken');
     try {
       const response = await fetch('http://127.0.0.1:8000/products/logout/', {
@@ -49,7 +61,7 @@ const Sidebar = () => {
     catch (error) {
       console.error('Errore durante il logout:', error);
     }
-  }
+  }*/
 
   return (
     <div className="relative text-black text-2xl">
