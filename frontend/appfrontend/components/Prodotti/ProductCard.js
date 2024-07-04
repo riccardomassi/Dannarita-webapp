@@ -54,7 +54,7 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="h-[700px] w-[400px] rounded overflow-hidden shadow-lg bg-orange-100">
+    <div className="h-[710px] w-[400px] rounded overflow-hidden shadow-lg bg-orange-100">
       <div className="relative h-96 m-2">
         <Image src={product.image ? product.image : noImage} alt={product.name} layout="fill" objectFit="cover" />
       </div>
@@ -64,7 +64,7 @@ const ProductCard = ({ product }) => {
       </div>
       <div className="px-6 py-2 flex justify-between">
         <span className="inline-block bg-orange-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
-          Price: {product.price}
+          Price: {product.price} €
         </span>
         <button
           onClick={() => addToCart(product.id)}

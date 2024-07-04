@@ -16,12 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from .initcmds import create_random_products, delete_all_products
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('products/', include('products.urls')),
 ]
-
-delete_all_products()
-create_random_products(10)

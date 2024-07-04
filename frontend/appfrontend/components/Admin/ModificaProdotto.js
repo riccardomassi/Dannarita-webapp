@@ -10,6 +10,7 @@ const ModificaProdotto = () => {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
+    brand: '',
     price: '',
     image: null,
   });
@@ -36,6 +37,7 @@ const ModificaProdotto = () => {
     setFormData({
       name: product.name,
       description: product.description,
+      brand: product.brand,
       price: product.price,
       image: null,
     });
@@ -59,6 +61,7 @@ const ModificaProdotto = () => {
     const formDataToSend = new FormData();
     formDataToSend.append('name', formData.name);
     formDataToSend.append('description', formData.description);
+    formDataToSend.append('brand', formData.brand);
     formDataToSend.append('price', formData.price);
     if (formData.image) {
       formDataToSend.append('image', formData.image);
@@ -113,6 +116,15 @@ const ModificaProdotto = () => {
               className="border border-gray-300 rounded-md p-2 w-full"
               name="description"
               value={formData.description}
+              onChange={handleInputChange}
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-lg font-semibold mb-2">Brand</label>
+            <textarea
+              className="border border-gray-300 rounded-md p-2 w-full"
+              name="brand"
+              value={formData.brand}
               onChange={handleInputChange}
             />
           </div>

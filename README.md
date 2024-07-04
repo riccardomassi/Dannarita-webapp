@@ -24,20 +24,12 @@ Per avviare il server backend:
 5. Esegui il comando `python manage.py runserver` per avviare il server Django.
 6. Il server sarà disponibile all'indirizzo `http://127.0.0.1:8000/`.
 
-### Creazione superuser e prodotti casuali
+### Creazione superuser
 
 Per creare un superuser
 
 1. lanciare da riga di comando `python manage.py createsuperuser`
 2. inserire username e password
-
-Per creare prodotti casuali
-
-1. Guardare le funzioni `delete_all_products()`, `create_random_products(num_products=10)` nel file `initcmds.py`.
-2. La funzione `delete_all_products()` elimina tutti i prodotti nel database.
-3. La funzione `create_random_products(num_products=10)` crea 10 prodotti casuali nel database.
-4. Le funzioni vengono chiamate una sola volta all'avvio del server Django, all'interno del file `appbackend/urls.py`.
-5. Vengono eliminati tutti i prodotti e creati 10 nuovi prodotti casuali ogni volta che il server viene riavviato. Per impedire che ciò accada, una volta avviato il server commentare le due funzioni.
 
 
 ## Frontend: Next.js
@@ -56,7 +48,8 @@ Per avviare il server frontend:
 4. Esegui il comando `npm install` per installare le dipendenze del progetto.
 5. Esegui il comando `npm run build` per creare i file statici per il server Next.js.
 6. Esegui il comando `npm run start` per avviare il server Next.js.
-7. Il server sarà disponibile all'indirizzo `http://localhost:3000/`.
+7. In alternativa a `npm run build` e `npm run start`, puoi usare `npm run dev` per avviare il server in modalità developer.
+7. Il server sarà disponibile all'indirizzo `http://localhost:3000/` (ricordati di guardare la sezione Dominio per i Cookie di Sessione).
 
 
 # Dominio per i Cookie di Sessione

@@ -10,7 +10,7 @@ This class will be used to serialize and deserialize Product objects
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['id', 'name', 'description', 'price', 'image']
+        fields = ['id', 'name', 'description', 'brand', 'price', 'image']
 
     def create(self, clean_data):
         product = Product.objects.create(**clean_data)
@@ -21,6 +21,7 @@ class ProductSerializer(serializers.ModelSerializer):
         instance.name = clean_data.get('name', instance.name)
         instance.description = clean_data.get('description', instance.description)
         instance.price = clean_data.get('price', instance.price)
+        instance.brand = clean_data.get('brand', instance.brand)
         image = clean_data.pop('image', None)
         if image:
             instance.image = image
