@@ -1,12 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    loader: 'imgix', // Choose your preferred loader
-    path: 'https://*.serveo.net/', // Replace with your serveo.net backend URL
-    // path : 'http://127.0.0.1:8000/',
-    // change the path to http://127.0.0.1:8000/ if you are using a local Django server
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'dannarita-backend.serveo.net',
+        // change the path to protocol and hostname if you are using a local Django server
+        // protocol: 'http',
+        // hostname: '127.0.0.1',
+      }
+    ],
   },
-
 };
 
 export default nextConfig;
