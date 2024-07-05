@@ -8,14 +8,12 @@ const ProductCard = ({ product }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
-  // Immagine di fallback
-  const noImage = '/no-image.jpg';
+  const noImage = '/no-image.jpg'; // Fallback image
   const router = useRouter();
 
   const addToCart = (productID) => {
     axiosInstance.get('user/')
       .then(response => {
-        // Se l'utente è loggato, aggiungi il prodotto al carrello
         if (response.status === 200) {
           setIsLoggedIn(true);
           axiosInstance.put(`cart/update/${productID}/`)
@@ -30,9 +28,7 @@ const ProductCard = ({ product }) => {
               setPopupMessage('Errore durante l\'aggiunta del prodotto al carrello.');
               setShowPopup(true);
             });
-        }
-        // Altrimenti specifica che deve eseguire il login prima di aggiungere al carrello 
-        else {
+        } else {
           setIsLoggedIn(false);
           setPopupMessage('Devi eseguire il LOGIN prima!');
           setShowPopup(true);
@@ -53,10 +49,21 @@ const ProductCard = ({ product }) => {
     }
   };
 
+  // Dynamically determine the image URL based on environment variable
+  const getImageUrl = () => {
+    if (process.env.NEXT_PUBLIC_API_BASE_URL) {
+      // Use NEXT_PUBLIC_API_BASE_URL if defined
+      return `${process.env.NEXT_PUBLIC_API_BASE_URL}/static/${product.image}`;
+    } else {
+      // Fallback to localhost URL
+      return `http://127.0.0.1:8000/static/${product.image}`;
+    }
+  };
+
   return (
     <div className="h-[710px] w-[400px] rounded overflow-hidden shadow-lg bg-orange-100">
       <div className="relative h-96 m-2">
-        <Image src={product.image ? product.image : noImage} alt={product.name} layout="fill" objectFit="cover" />
+        <Image src={product.image ? getImageUrl() : noImage} alt={product.name} layout="fill" objectFit="cover" />
       </div>
       <div className="px-6 py-4">
         <div className="font-bold text-xl mb-2 text-gray-800">{product.name}</div>
@@ -81,6 +88,6 @@ const ProductCard = ({ product }) => {
       }
     </div>
   );
-}
+};
 
 export default ProductCard;
