@@ -9,7 +9,7 @@ axios.defaults.withCredentials = true;
 // Define a function to get the base URL dynamically
 const getBaseUrl = () => {
   // Default base URL (fallback in case NEXT_PUBLIC_API_BASE_URL is not available)
-  let baseUrl = 'http://127.0.0.1:8000/products/';  // Adjust with your default local Django server URL
+  let baseUrl = 'http://127.0.0.1:8000';  // Adjust with your default local Django server URL
 
   // Check if NEXT_PUBLIC_API_BASE_URL is available in process.env
   if (process.env.NEXT_PUBLIC_API_BASE_URL) {
@@ -26,14 +26,13 @@ const axiosInstance = axios.create({
 
 // Add a request interceptor to include CSRF token in requests
 axiosInstance.interceptors.request.use(
-  (config) => {
+  config => {
     const csrfToken = Cookies.get('csrftoken');
     if (csrfToken) {
       config.headers['X-CSRFToken'] = csrfToken;
     }
     return config;
-  },
-  (error) => {
+  }, error => {
     return Promise.reject(error);
   }
 );
