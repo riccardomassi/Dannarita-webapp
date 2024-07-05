@@ -12,7 +12,9 @@ const getBaseUrl = () => {
 };
 
 // Create an Axios instance without baseURL initially
-const axiosInstance = axios.create();
+const axiosInstance = axios.create(
+  { baseURL: getBaseUrl() }
+);
 
 // Add a request interceptor to set baseURL dynamically
 axiosInstance.interceptors.request.use(async (config) => {
