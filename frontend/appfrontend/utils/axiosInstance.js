@@ -2,19 +2,27 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 // Configure Axios defaults
-axiosInstance.defaults.xsrfCookieName = 'csrftoken';
-axiosInstance.defaults.xsrfHeaderName = 'X-CSRFToken';
-axiosInstance.defaults.withCredentials = true;
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+axios.defaults.withCredentials = true;
 
-// Function to get base URL dynamically
+// Define a function to get the base URL dynamically
 const getBaseUrl = () => {
-  return process.env.NEXT_PUBLIC_API_BASE_URL || 'http://127.0.0.1:8000/products/';
+  // Default base URL (fallback in case NEXT_PUBLIC_API_BASE_URL is not available)
+  let baseUrl = 'http://127.0.0.1:8000/products/';  // Adjust with your default local Django server URL
+
+  // Check if NEXT_PUBLIC_API_BASE_URL is available in process.env
+  if (process.env.NEXT_PUBLIC_API_BASE_URL) {
+    baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  }
+
+  return `${baseUrl}/products/`;
 };
 
-// Create an Axios instance with baseURL 
-const axiosInstance = axios.create(
-  { baseURL: getBaseUrl() }
-);
+// Create an Axios instance with dynamic base URL
+const axiosInstance = axios.create({
+  baseURL: getBaseUrl(),
+});
 
 // Add a request interceptor to include CSRF token in requests
 axiosInstance.interceptors.request.use(
