@@ -300,5 +300,4 @@ class ProductDeleteAPIView(generics.DestroyAPIView):
 		instance = self.get_object()
 		self.perform_destroy(instance)
 		return Response(status=status.HTTP_204_NO_CONTENT) 
- 
-
+	
