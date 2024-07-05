@@ -11,6 +11,7 @@ django-cors-headers = "*"
 requests = "*"
 pillow = "*"
 python-dateutil = "*"
+gunicorn = "*"
 
 [dev-packages]
 

@@ -11,18 +11,10 @@ const getBaseUrl = () => {
   return process.env.NEXT_PUBLIC_API_BASE_URL || 'http://127.0.0.1:8000/';
 };
 
-// Create an Axios instance without baseURL initially
+// Create an Axios instance with baseURL 
 const axiosInstance = axios.create(
   { baseURL: getBaseUrl() }
 );
-
-// Add a request interceptor to set baseURL dynamically
-axiosInstance.interceptors.request.use(async (config) => {
-  config.baseURL = await getBaseUrl(); // Set baseURL dynamically using getBaseUrl function
-  return config;
-}, (error) => {
-  return Promise.reject(error);
-});
 
 // Add a request interceptor to include CSRF token in requests
 axiosInstance.interceptors.request.use(
