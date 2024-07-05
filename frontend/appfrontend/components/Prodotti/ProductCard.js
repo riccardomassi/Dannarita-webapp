@@ -51,13 +51,14 @@ const ProductCard = ({ product }) => {
 
   // Dynamically determine the image URL based on environment variable
   const getImageUrl = () => {
-    if (process.env.NEXT_PUBLIC_API_BASE_URL) {
-      // Use NEXT_PUBLIC_API_BASE_URL if defined
-      return `${process.env.NEXT_PUBLIC_API_BASE_URL}/static/${product.image}`;
-    } else {
-      // Fallback to localhost URL
-      return `http://127.0.0.1:8000/static/${product.image}`;
+    let imageUrl = product.image || ''; // Default to empty string if product.image is undefined
+
+    // Check if the URL starts with 'http://' and replace with 'https://'
+    if (imageUrl.startsWith('http://') && process.env.NEXT_PUBLIC_API_BASE_URL) {
+      imageUrl = imageUrl.replace('http://', 'https://');
     }
+
+    return imageUrl;
   };
 
   return (
