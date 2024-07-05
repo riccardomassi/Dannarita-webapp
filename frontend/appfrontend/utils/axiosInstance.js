@@ -7,7 +7,7 @@ axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
 
 const axiosInstance = axios.create({
-  baseURL: 'http://127.0.0.1:8000/products/',
+  baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}/products/`,
 });
 
 // Aggiungi un interceptor di richiesta per includere il CSRF token in tutte le richieste

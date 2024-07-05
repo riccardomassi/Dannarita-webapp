@@ -150,17 +150,18 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
-    'https://localhost:3000',
-    'https://127.0.0.1:3000',
 ]
 
 # CSRF settings
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
-    'https://localhost:3000',
-    'https://127.0.0.1:3000',
-]                            
+]              
+
+# Session cookie expiration time set to 7 days
+SESSION_COOKIE_AGE = 60 * 60 * 24 * 7
+
+
 
 
 
