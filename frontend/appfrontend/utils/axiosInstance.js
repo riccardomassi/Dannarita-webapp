@@ -1,6 +1,10 @@
-import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+
+// Configure Axios defaults
+axios.defaults.xsrfCookieName = 'csrftoken';
+axios.defaults.xsrfHeaderName = 'X-CSRFToken';
+axios.defaults.withCredentials = true;
 
 // Function to create Axios instance with dynamic base URL
 const createAxiosInstance = (baseUrl) => {
@@ -25,27 +29,7 @@ const createAxiosInstance = (baseUrl) => {
   return instance;
 };
 
-// Custom hook to manage Axios instance and update it on URL change
-export const useAxios = () => {
-  const [axiosInstance, setAxiosInstance] = useState(null);
-  const [baseUrl, setBaseUrl] = useState('');
+// Export a default Axios instance with default base URL
+const axiosInstance = createAxiosInstance(process.env.NEXT_PUBLIC_API_BASE_URL || 'http://127.0.0.1:8000');
+export default axiosInstance;
 
-  useEffect(() => {
-    // Fetch environment variable or any other mechanism to get base URL
-    const fetchBaseUrl = async () => {
-      const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://127.0.0.1:8000';
-      setBaseUrl(baseUrl);
-    };
-
-    fetchBaseUrl();
-  }, []);
-
-  useEffect(() => {
-    if (baseUrl) {
-      const instance = createAxiosInstance(baseUrl);
-      setAxiosInstance(instance);
-    }
-  }, [baseUrl]);
-
-  return axiosInstance;
-};
