@@ -11,6 +11,8 @@ const getBaseUrl = () => {
   // Default base URL (fallback in case NEXT_PUBLIC_API_BASE_URL is not available)
   let baseUrl = 'http://127.0.0.1:8000';
 
+  console.log('process.env:', process.env);
+
   // Check if NEXT_PUBLIC_API_BASE_URL is available in process.env
   if (process.env.NEXT_PUBLIC_API_BASE_URL) {
     baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
