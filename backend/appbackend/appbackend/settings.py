@@ -29,7 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    '0e30-93-47-53-171.ngrok-free.app',
+    'ba22-2001-b07-aa7-ab9f-80a3-2642-ed27-85e2.ngrok-free.app'
 ]
 
 
@@ -154,14 +154,12 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
-    'https://dannarita.vercel.app',
 ]
 
 # CSRF settings
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
-    'https://dannarita.vercel.app',
 ]              
 
 # Session cookie expiration time set to 7 days
