@@ -1,34 +1,15 @@
-
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-// Configure Axios defaults
-axios.defaults.xsrfCookieName = 'csrftoken';
-axios.defaults.xsrfHeaderName = 'X-CSRFToken';
-axios.defaults.withCredentials = true;
-
-// Function to create and configure Axios instance dynamically
-const createAxiosInstance = () => {
-  // Define a function to get the base URL dynamically
-  const getBaseUrl = () => {
-    // Default base URL (fallback in case NEXT_PUBLIC_API_BASE_URL is not available)
-    let baseUrl = 'http://localhost:8000';  // Adjust with your default local Django server URL
-
-    // Check if NEXT_PUBLIC_API_BASE_URL is available in process.env
-    if (process.env.NEXT_PUBLIC_API_BASE_URL) {
-      baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-    }
-
-    return `${baseUrl}/products/`;
-  };
-
-  // Create an Axios instance with dynamic base URL
-  const axiosInstance = axios.create({
-    baseURL: getBaseUrl(),
+// Function to create Axios instance with dynamic base URL
+const createAxiosInstance = (baseUrl) => {
+  const instance = axios.create({
+    baseURL: `${baseUrl}/products/`,
   });
 
-  // Add a request interceptor to include CSRF token in requests
-  axiosInstance.interceptors.request.use(
+  // Add request interceptor to include CSRF token in requests
+  instance.interceptors.request.use(
     (config) => {
       const csrfToken = Cookies.get('csrftoken');
       if (csrfToken) {
@@ -41,17 +22,30 @@ const createAxiosInstance = () => {
     }
   );
 
-  // Log the base URL for debugging
-  console.log('Using base URL:', axiosInstance.defaults.baseURL);
+  return instance;
+};
+
+// Custom hook to manage Axios instance and update it on URL change
+export const useAxios = () => {
+  const [axiosInstance, setAxiosInstance] = useState(null);
+  const [baseUrl, setBaseUrl] = useState('');
+
+  useEffect(() => {
+    // Fetch environment variable or any other mechanism to get base URL
+    const fetchBaseUrl = async () => {
+      const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://127.0.0.1:8000';
+      setBaseUrl(baseUrl);
+    };
+
+    fetchBaseUrl();
+  }, []);
+
+  useEffect(() => {
+    if (baseUrl) {
+      const instance = createAxiosInstance(baseUrl);
+      setAxiosInstance(instance);
+    }
+  }, [baseUrl]);
 
   return axiosInstance;
 };
-
-// Export a function that creates a new Axios instance each time it's called
-export const getAxiosInstance = () => {
-  return createAxiosInstance();
-};
-
-// Export the default Axios instance created once at the start
-const axiosInstance = createAxiosInstance();
-export default axiosInstance;
