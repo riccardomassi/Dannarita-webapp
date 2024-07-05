@@ -29,8 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'localhost',
     '127.0.0.1',
-    '.ngrok-free.app',
-    '.serveo.net'
+    '.serveo.net',
 ]
 
 
@@ -170,6 +169,7 @@ CSRF_TRUSTED_ORIGINS = [
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 7
 SESSION_COOKIE_SAMESITE = 'None'  # Set to 'None' for cross-domain cookies
 SESSION_COOKIE_SECURE = True  # Secure flag for HTTPS-only cookies
+CSRF_COOKIE_SECURE = True  # Secure flag for HTTPS-only cookies
 
 
 

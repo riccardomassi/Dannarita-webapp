@@ -51,10 +51,11 @@ const ProductCard = ({ product }) => {
 
   // Dynamically determine the image URL based on environment variable
   const getImageUrl = () => {
+    let useServeo = true; // Set to true if using Serveo else set to false
     let imageUrl = product.image || ''; // Default to empty string if product.image is undefined
 
     // Check if the URL starts with 'http://' and replace with 'https://'
-    if (imageUrl.startsWith('http://') && process.env.NEXT_PUBLIC_API_BASE_URL) {
+    if (imageUrl.startsWith('http://') && useServeo) {
       imageUrl = imageUrl.replace('http://', 'https://');
     }
 
