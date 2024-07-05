@@ -8,7 +8,7 @@ axiosInstance.defaults.withCredentials = true;
 
 // Function to get base URL dynamically
 const getBaseUrl = () => {
-  return process.env.NEXT_PUBLIC_API_BASE_URL || 'http://127.0.0.1:8000/';
+  return process.env.NEXT_PUBLIC_API_BASE_URL || 'http://127.0.0.1:8000/products/';
 };
 
 // Create an Axios instance with baseURL 
