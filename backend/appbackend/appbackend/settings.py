@@ -26,7 +26,11 @@ SECRET_KEY = 'django-insecure-+5=y36-%4z86_@uy%gnrfg@k_qs#smu!u=t-f&fxpxac+_$ds3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '0e30-93-47-53-171.ngrok-free.app',
+]
 
 
 # Application definition
@@ -150,16 +154,20 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
+    'https://dannarita.vercel.app',
 ]
 
 # CSRF settings
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
+    'https://dannarita.vercel.app',
 ]              
 
 # Session cookie expiration time set to 7 days
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 7
+SESSION_COOKIE_SAMESITE = 'None'  # Set to 'None' for cross-domain cookies
+SESSION_COOKIE_SECURE = True  # Secure flag for HTTPS-only cookies
 
 
 

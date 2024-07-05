@@ -1,24 +1,41 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-// Configurazione predefinita di Axios
+// Configure Axios defaults
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
 
+// Define a function to get the base URL dynamically
+const getBaseUrl = () => {
+  // Default base URL (fallback in case NEXT_PUBLIC_API_BASE_URL is not available)
+  let baseUrl = 'http://127.0.0.1:8000';
+
+  // Check if NEXT_PUBLIC_API_BASE_URL is available in process.env
+  if (process.env.NEXT_PUBLIC_API_BASE_URL) {
+    baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  }
+
+  return `${baseUrl}/products/`;
+};
+
+// Create an Axios instance with dynamic base URL
 const axiosInstance = axios.create({
-  baseURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}/products/`,
+  baseURL: getBaseUrl(),
 });
 
-// Aggiungi un interceptor di richiesta per includere il CSRF token in tutte le richieste
-axiosInstance.interceptors.request.use(config => {
-  const csrfToken = Cookies.get('csrftoken');
-  if (csrfToken) {
-    config.headers['X-CSRFToken'] = csrfToken;
+// Add a request interceptor to include CSRF token in requests
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const csrfToken = Cookies.get('csrftoken');
+    if (csrfToken) {
+      config.headers['X-CSRFToken'] = csrfToken;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
   }
-  return config;
-}, error => {
-  return Promise.reject(error);
-});
+);
 
 export default axiosInstance;
