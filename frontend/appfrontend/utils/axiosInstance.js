@@ -8,9 +8,7 @@ axios.defaults.withCredentials = true;
 
 // Create an Axios instance with dynamic base URL
 const axiosInstance = axios.create({
-  baseURL: 'https://dannarita-backend.serveo.net/products/',
-  // Change the baseURL if you are using a local Django server
-  // baseURL: 'http://127.0.0.1:8000/products/'
+  baseURL: 'http://127.0.0.1:8000/products/'
 });
 
 // Add a request interceptor to include CSRF token in requests

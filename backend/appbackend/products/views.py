@@ -11,6 +11,8 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth import login, logout
 from .permissions import IsSuperUser
 from rest_framework.exceptions import NotFound
+from django.http import JsonResponse
+from django.middleware.csrf import get_token
 
 """
 API view for registering a new user.

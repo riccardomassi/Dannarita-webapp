@@ -49,23 +49,10 @@ const ProductCard = ({ product }) => {
     }
   };
 
-  // Dynamically determine the image URL based on environment variable
-  const getImageUrl = () => {
-    let useServeo = true; // Set to true if using Serveo else set to false
-    let imageUrl = product.image || ''; // Default to empty string if product.image is undefined
-
-    // Check if the URL starts with 'http://' and replace with 'https://'
-    if (imageUrl.startsWith('http://') && useServeo) {
-      imageUrl = imageUrl.replace('http://', 'https://');
-    }
-
-    return imageUrl;
-  };
-
   return (
     <div className="h-[710px] w-[400px] rounded overflow-hidden shadow-lg bg-orange-100">
       <div className="relative h-96 m-2">
-        <Image src={product.image ? getImageUrl() : noImage} alt={product.name} layout="fill" objectFit="cover" />
+        <Image src={product.image ? product.image : noImage} alt={product.name} layout="fill" objectFit="cover" />
       </div>
       <div className="px-6 py-4">
         <div className="font-bold text-xl mb-2 text-gray-800">{product.name}</div>
