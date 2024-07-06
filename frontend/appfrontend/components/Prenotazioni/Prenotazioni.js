@@ -7,7 +7,10 @@ import Popup from "../Popup/Popup";
 
 const Prenotazioni = () => {
   const [prenotazioni, setPrenotazioni] = useState([]);
+  const [showPopupConferma, setShowPopupConferma] = useState(false);
   const [showPopupEliminato, setShowPopupEliminato] = useState(false);
+  const [idPrenotazione, setIdPrenotazione] = useState(null);
+  const [message, setMessage] = useState('');
   const { isSuperuser } = useAuth();
   // Raggruppare le prenotazioni per utente_nome
   const groupedPrenotazioni = prenotazioni.reduce((acc, prenotazione) => {
@@ -37,11 +40,19 @@ const Prenotazioni = () => {
     fetchPrenotazioni();
   }, []);
 
-  const eliminaPrenotazione = (idPrenotazione) => {
+  const eliminaPrenotazione = (id_prenotazione) => {
+    setShowPopupConferma(true);
+    setMessage(`Sicuro di voler eliminare la prenotazione ${id_prenotazione}?`);
+    setIdPrenotazione(id_prenotazione);
+  }
+
+  const handleConfermaELiminaPrenotazione = () => {
     axiosInstance.delete(`reservation/delete/${idPrenotazione}/`)
       .then(response => {
         if (response.status === 204) {
           setShowPopupEliminato(true);
+          setShowPopupConferma(false);
+          setMessage('Prenotazione eliminata con successo!');
           fetchPrenotazioni();
         }
       }
@@ -51,6 +62,9 @@ const Prenotazioni = () => {
       });
   }
 
+  const onCloseConferma = () => {
+    setShowPopupConferma(false);
+  };
   const onCloseEliminato = () => {
     setShowPopupEliminato(false);
   };
@@ -95,10 +109,14 @@ const Prenotazioni = () => {
           )}
         </div>
       </div>
-      {/* Mostra POPUP per avvenuta eliminazione */}
-      {showPopupEliminato && (
-        <Popup message="Prenotazione eliminata con successo!" onClose={onCloseEliminato} />
-      )}
+      {/* Mostra POPUP per conferma eliminazione */
+        showPopupConferma && (
+          <Popup message={message} onClose={onCloseConferma} showConferma={true} handleConferma={handleConfermaELiminaPrenotazione} />
+        )}
+      {/* Mostra POPUP per avvenuta eliminazione */
+        showPopupEliminato && (
+          <Popup message={message} onClose={onCloseEliminato} />
+        )}
     </div>
   );
 };
