@@ -42,27 +42,6 @@ const Sidebar = () => {
       });
   };
 
-  /*const handleLogout = async () => {
-    const csrftoken = Cookies.get('csrftoken');
-    try {
-      const response = await fetch('http://127.0.0.1:8000/products/logout/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': csrftoken
-        },
-        credentials: 'include'
-      });
-
-      if (response.ok) {
-        router.push('/Login');
-      }
-    }
-    catch (error) {
-      console.error('Errore durante il logout:', error);
-    }
-  }*/
-
   return (
     <div className="relative text-black text-2xl">
       <div className="fixed top-0 left-0 z-40 w-72 h-screen transition-transform">
