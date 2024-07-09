@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import axiosInstance from '@/utils/axiosInstance';
 import { Add, Remove, DeleteForever } from '@mui/icons-material';
+import Popup from '../Popup/Popup';
 
 const CarrelloCard = ({ product, reload, setReload }) => {
   const [quantita, setQuantita] = useState(product.quantita);
+  const [showPopup, setShowPopup] = useState(false);
+  const [message, setMessage] = useState('');
 
   const addQuantity = (productId, newQuantity) => {
     axiosInstance.put(`cart/update/${productId}/`)
@@ -15,6 +18,10 @@ const CarrelloCard = ({ product, reload, setReload }) => {
       })
       .catch(error => {
         console.error('Errore durante la chiamata API:', error);
+        if (error.response.status === 400) {
+          setMessage(error.response.data['error']);
+          setShowPopup(true);
+        }
       });
   };
 
@@ -57,6 +64,10 @@ const CarrelloCard = ({ product, reload, setReload }) => {
       });
   };
 
+  const onClose = () => {
+    setShowPopup(false);
+  }
+  
   return (
     <div className="rounded overflow-hidden shadow-lg bg-orange-100">
       <div className="px-6 py-4">
@@ -87,6 +98,12 @@ const CarrelloCard = ({ product, reload, setReload }) => {
           </div>
         </button>
       </div>
+      {showPopup &&
+        <Popup
+          message={message}
+          onClose={onClose}
+        />
+      }
     </div>
   );
 };

@@ -11,8 +11,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth import login, logout
 from .permissions import IsSuperUser
 from rest_framework.exceptions import NotFound
-from django.http import JsonResponse
-from django.middleware.csrf import get_token
+from rest_framework.exceptions import ValidationError
 
 """
 API view for registering a new user.
@@ -117,10 +116,24 @@ class AggiornaCarrelloView(generics.UpdateAPIView):
 
 	def put(self, request, prodotto_id):
 		prodotto = get_object_or_404(Product, id=prodotto_id)
-		carrello, created = Carrello.objects.get_or_create(utente=request.user)
-		carrello_prodotto, created = CarrelloProdotto.objects.get_or_create(carrello=carrello, prodotto=prodotto)
+		carrello, createdCarrello = Carrello.objects.get_or_create(utente=request.user)
+		carrello_prodotto, createdProdotto = CarrelloProdotto.objects.get_or_create(carrello=carrello, prodotto=prodotto)
 
-		if not created:
+		# Controllo se il prodotto è stato creato
+		# Se il prodotto è stato creato, controllo se il carrello contiene già 5 prodotti
+		# Se il carrello contiene già 5 prodotti, sollevo un'eccezione
+		if createdProdotto:
+			if carrello.prodotti.count() > 5:
+				carrello_prodotto.delete()
+				return Response({'error': 'Il carrello non può contenere più di 5 prodotti unici'}, status=status.HTTP_400_BAD_REQUEST)
+			
+		# Controllo se il prodotto è già presente nel carrello
+		# Se il prodotto è già presente, controllo se la quantità è maggiore di 3
+		# Se la quantità è maggiore di 3, sollevo un'eccezione
+		# Altrimenti, incremento la quantità del prodotto nel carrello
+		if not createdProdotto:
+			if carrello_prodotto.quantita >= 3:
+				return Response({'error': 'Non puoi aggiungere più di 3 unità di un prodotto'}, status=status.HTTP_400_BAD_REQUEST)
 			carrello_prodotto.quantita += 1
 			carrello_prodotto.save()
 

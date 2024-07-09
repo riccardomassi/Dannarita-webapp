@@ -25,7 +25,11 @@ const ProductCard = ({ product }) => {
             })
             .catch(error => {
               console.error('Errore durante la chiamata API:', error);
-              setPopupMessage('Errore durante l\'aggiunta del prodotto al carrello.');
+              if (error.response.status === 400) {
+                setPopupMessage(error.response.data['error']);
+              } else {
+                setPopupMessage('Errore durante l\'aggiunta del prodotto al carrello.');
+              }
               setShowPopup(true);
             });
         } else {

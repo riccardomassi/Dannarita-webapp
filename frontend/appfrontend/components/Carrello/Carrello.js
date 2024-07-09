@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import axiosInstance from "@/utils/axiosInstance";
 import CarrelloCard from "./CarrelloCard";
 import Popup from "../Popup/Popup";
@@ -8,6 +8,13 @@ const Carrello = () => {
   const [products, setProducts] = useState([]);
   const [reload, setReload] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [message, setMessage] = useState('');
+  const [showDisclaimer, setShowDisclaimer] = useState(true);
+
+  // Fetch products on mount and reload
+  useEffect(() => {
+    fetchProducts();
+  }, [reload]);
 
   const fetchProducts = () => {
     axiosInstance.get('cart/')
@@ -24,20 +31,26 @@ const Carrello = () => {
       .then(response => {
         if (response.status === 201) {
           setReload(!reload);
+          setMessage('Prenotazione effettuata con successo!');
           setShowPopup(true);
         }
       })
       .catch(error => {
         console.error('Errore durante la chiamata API:', error);
+        if (error.response.status === 400) {
+          console.log(error.response.data);
+          setMessage(error.response.data[0]);
+          setShowPopup(true);
+        }
       });
   }
 
-  useEffect(() => {
-    fetchProducts();
-  }, [reload]);
-
-  const onClose = () => {
+  const onClosePopup = () => {
     setShowPopup(false);
+  }
+
+  const onCloseDisclaimer = () => {
+    setShowDisclaimer(false);
   }
 
   return (
@@ -57,11 +70,23 @@ const Carrello = () => {
             Prenota
           </button>
         </div>
+        {/* Dismissible Disclaimer */}
+        {showDisclaimer && (
+          <div className="relative p-4 bg-yellow-100 border border-yellow-300 rounded-lg text-yellow-800">
+            Nota: Ogni utente può effettuare un massimo di 3 prenotazioni alla volta.
+            <button
+              onClick={onCloseDisclaimer}
+              className="absolute top-0 right-0 mt-2 mr-2 bg-yellow-200 text-yellow-800 px-2 py-1 rounded-full hover:bg-yellow-300"
+            >
+              ✕
+            </button>
+          </div>
+        )}
       </div>
       {showPopup &&
         <Popup
-          message="Prenotazione effettuata con successo!"
-          onClose={onClose}
+          message={message}
+          onClose={onClosePopup}
         />
       }
     </div>

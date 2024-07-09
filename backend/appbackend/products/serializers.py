@@ -123,6 +123,10 @@ class PrenotazioneSerializer(serializers.ModelSerializer):
         if not prodotti_data:
             raise ValidationError('Una prenotazione deve contenere almeno un prodotto.')
         
+        # Controllo che l'utente non abbia già effettuato 3 prenotazioni
+        if utente.prenotazione_set.count() >= 3:
+            raise ValidationError('Non puoi effettuare più di 3 prenotazioni.')
+        
         prenotazione = Prenotazione.objects.create(utente=utente,**clean_data)
         for prodotto_data in prodotti_data:
             prodotto = Product.objects.get(pk=prodotto_data['prodotto'])
