@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ringraziamento per il ritiro della prenotazione</title>
+</head>
+<body style="font-family: Arial, sans-serif;">
+
+<!-- Contenuto dell'email -->
+<p>Ciao {{ user.username }},</p>
+<p>Grazie per essere venuto a ritirare la tua prenotazione. Speriamo che i prodotti siano di tuo gradimento!</p>
+<ul>
+    {% for prodotto in prenotazione_prodotti %}
+    <li><strong>{{ prodotto.prodotto.name }}</strong></li>
+    <ul>
+        <li><strong>Quantità:</strong> {{ prodotto.quantita }}</li>
+        <li><strong>Prezzo:</strong> {{ prodotto.prodotto.price }}</li>
+    </ul>
+    {% endfor %}
+</ul>
+
+<p>Grazie ancora e a presto!</p>
+
+</body>
+</html>

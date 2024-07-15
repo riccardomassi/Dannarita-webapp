@@ -4,6 +4,7 @@ import axiosInstance from "@/utils/axiosInstance";
 import dayjs from "dayjs";
 import { useAuth } from "../AuthContext/AuthContext";
 import Popup from "../Popup/Popup";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Prenotazioni = () => {
   const [prenotazioni, setPrenotazioni] = useState([]);
@@ -11,7 +12,9 @@ const Prenotazioni = () => {
   const [showPopupEliminato, setShowPopupEliminato] = useState(false);
   const [idPrenotazione, setIdPrenotazione] = useState(null);
   const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
   const { isSuperuser } = useAuth();
+
   // Raggruppare le prenotazioni per utente_nome
   const groupedPrenotazioni = prenotazioni.reduce((acc, prenotazione) => {
     const utenteNome = prenotazione.utente_nome;
@@ -47,6 +50,8 @@ const Prenotazioni = () => {
   }
 
   const handleConfermaELiminaPrenotazione = () => {
+    setLoading(true);
+
     axiosInstance.delete(`reservation/delete/${idPrenotazione}/`)
       .then(response => {
         if (response.status === 204) {
@@ -55,16 +60,19 @@ const Prenotazioni = () => {
           setMessage('Prenotazione eliminata con successo!');
           fetchPrenotazioni();
         }
-      }
-      )
+      })
       .catch(error => {
         console.error('Errore durante la chiamata API:', error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }
 
   const onCloseConferma = () => {
     setShowPopupConferma(false);
   };
+
   const onCloseEliminato = () => {
     setShowPopupEliminato(false);
   };
@@ -109,14 +117,20 @@ const Prenotazioni = () => {
           )}
         </div>
       </div>
-      {/* Mostra POPUP per conferma eliminazione */
-        showPopupConferma && (
-          <Popup message={message} onClose={onCloseConferma} showConferma={true} handleConferma={handleConfermaELiminaPrenotazione} />
-        )}
-      {/* Mostra POPUP per avvenuta eliminazione */
-        showPopupEliminato && (
-          <Popup message={message} onClose={onCloseEliminato} />
-        )}
+      {/* Mostra POPUP per conferma eliminazione */}
+      {showPopupConferma && (
+        <Popup message={message} onClose={onCloseConferma} showConferma={true} handleConferma={handleConfermaELiminaPrenotazione} />
+      )}
+      {/* Mostra POPUP per avvenuta eliminazione */}
+      {showPopupEliminato && (
+        <Popup message={message} onClose={onCloseEliminato} />
+      )}
+      {/* Mostra il cerchio di caricamento al centro della pagina */}
+      {loading && (
+        <div className="fixed top-0 left-0 w-full h-screen flex justify-center items-center bg-black bg-opacity-50 z-50">
+          <CircularProgress color="inherit" />
+        </div>
+      )}
     </div>
   );
 };

@@ -1,8 +1,9 @@
 'use client';
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import axiosInstance from "@/utils/axiosInstance";
 import CarrelloCard from "./CarrelloCard";
 import Popup from "../Popup/Popup";
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Carrello = () => {
   const [products, setProducts] = useState([]);
@@ -10,6 +11,7 @@ const Carrello = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [message, setMessage] = useState('');
   const [showDisclaimer, setShowDisclaimer] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // Fetch products on mount and reload
   useEffect(() => {
@@ -27,6 +29,8 @@ const Carrello = () => {
   };
 
   const handlePrenotazione = () => {
+    setLoading(true);
+
     axiosInstance.post('reservation/')
       .then(response => {
         if (response.status === 201) {
@@ -42,6 +46,9 @@ const Carrello = () => {
           setMessage(error.response.data[0]);
           setShowPopup(true);
         }
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }
 
@@ -65,9 +72,10 @@ const Carrello = () => {
           </span>
           <button
             onClick={() => handlePrenotazione()}
-            className="bg-amber-500 text-white py-2 px-4 rounded shadow-lg hover:bg-amber-600 transition duration-200"
+            disabled={loading} // Disabilita il pulsante durante il caricamento
+            className={`bg-amber-500 text-white py-2 px-4 rounded shadow-lg hover:bg-amber-600 transition duration-200 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
-            Prenota
+            {loading ? <CircularProgress size={24} color="inherit" /> : 'Prenota'}
           </button>
         </div>
         {/* Dismissible Disclaimer */}

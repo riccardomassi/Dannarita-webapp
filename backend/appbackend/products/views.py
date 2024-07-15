@@ -1,6 +1,6 @@
 from rest_framework import generics, permissions
 from .validations import custom_validation
-from .models import Product, Carrello, CarrelloProdotto, Prenotazione
+from .models import Product, Carrello, CarrelloProdotto, Prenotazione, PrenotazioneProdotto
 from .serializers import ProductSerializer, CustomUserSerializer, CarrelloSerializer, PrenotazioneSerializer, UserLoginSerializer, UserRegisterSerializer
 from rest_framework.response import Response
 from rest_framework import status
@@ -11,7 +11,9 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth import login, logout
 from .permissions import IsSuperUser
 from rest_framework.exceptions import NotFound
-from rest_framework.exceptions import ValidationError
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from appbackend import settings
 
 """
 API view for registering a new user.
@@ -171,6 +173,17 @@ class RimuoviDalCarrelloView(generics.DestroyAPIView):
 		return Response(status=status.HTTP_200_OK)
 
 """
+Function to send an email to the user with the reservation details.
+"""
+def prenotazione_effettuata_email(user, prenotazione_prodotti):
+	subject = 'Dettagli della tua prenotazione'
+	message = render_to_string('prenotazione_effetuata.html', {
+		'user': user,
+		'prenotazione_prodotti': prenotazione_prodotti,
+	})
+	send_mail(subject, '', settings.EMAIL_HOST_USER, [user.email], html_message=message)
+
+"""
 API view for creating a new reservation.
 """
 class PrenotaProdottiView(generics.CreateAPIView):
@@ -211,6 +224,12 @@ class PrenotaProdottiView(generics.CreateAPIView):
 				# Pulisci il carrello dopo la creazione della prenotazione
 				carrello.prodotti.clear()
 
+				# Retrieve all PrenotazioneProdotto associated with the prenotazione
+				prenotazione_prodotti = PrenotazioneProdotto.objects.filter(prenotazione=prenotazione)
+
+				# Invia un'email all'utente con i dettagli della prenotazione
+				prenotazione_effettuata_email(request.user, prenotazione_prodotti)
+
 				# Restituisci la risposta con i dati della prenotazione creata
 				return Response(serializer.data, status=status.HTTP_201_CREATED)
 			else:
@@ -231,7 +250,18 @@ class VisualizzaPrenotazioniView(generics.ListAPIView):
 			return Prenotazione.objects.all()
 		else:
 			return Prenotazione.objects.filter(utente=user)
-		
+
+"""
+Function to send an email to the user saying that he took is reservation.
+"""
+def prenotazione_ritirata_email(user, prenotazione_prodotti):
+	subject = 'Dettagli della tua prenotazione'
+	message = render_to_string('prenotazione_ritirata.html', {
+		'user': user,
+		'prenotazione_prodotti': prenotazione_prodotti,
+	})
+	send_mail(subject, '', settings.EMAIL_HOST_USER, [user.email], html_message=message)
+
 """
 API view for deleting a reservation.
 """
@@ -243,7 +273,21 @@ class EliminaPrenotazioneView(generics.DestroyAPIView):
 		pk = self.kwargs.get('pk')
 		try:
 			prenotazione = self.get_object(pk)
+
+			# Retrieve all PrenotazioneProdotto associated with the prenotazione
+			prenotazione_prodotti = PrenotazioneProdotto.objects.filter(prenotazione=prenotazione)
+
+			# Ottenere l'utente associato alla prenotazione
+			utente_associato = prenotazione.utente
+
+			print(utente_associato)
+
+			# Invia un'email all'utente dicendo che la prenotazione è stata ritirata
+			prenotazione_ritirata_email(utente_associato, prenotazione_prodotti)
+
+			# Elimina la prenotazione
 			prenotazione.delete()
+
 			return Response(status=status.HTTP_204_NO_CONTENT)
 		except Prenotazione.DoesNotExist:
 			raise NotFound(detail="Prenotazione non trovata")

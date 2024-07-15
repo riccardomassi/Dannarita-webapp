@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dettagli della tua prenotazione</title>
+</head>
+<body style="font-family: Arial, sans-serif;">
+
+<!-- Contenuto dell'email -->
+<p>Ciao {{ user.username }},</p>
+<p>Grazie per aver effettuato una prenotazione. Ecco i dettagli della tua prenotazione:</p>
+<ul>
+    {% for prodotto in prenotazione_prodotti %}
+    <li><strong>{{ prodotto.prodotto.name }}</strong></li>
+    <ul>
+        <li><strong>Quantità:</strong> {{ prodotto.quantita }}</li>
+        <li><strong>Prezzo:</strong> {{ prodotto.prodotto.price }}</li>
+    </ul>
+    {% endfor %}
+</ul>
+
+<p><strong>Totale speso:</strong> {{ totale }} €</p>
+
+</body>
+</html>

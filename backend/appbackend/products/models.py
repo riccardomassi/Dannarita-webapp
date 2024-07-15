@@ -33,18 +33,21 @@ Methods:
   create_superuser(username, password=None): Creates a superuser with the given username and password.
 """
 class CustomUserManager(BaseUserManager):
-  def create_user(self, username, password=None):
+  def create_user(self, username, email, password=None):
     if not username:
       raise ValueError('The Username field must be set')
+    if not email:
+      raise ValueError('The Email field must be set')
     if not password:
       raise ValueError('The Password field must be set')
-    user = self.model(username=username)
+    email = self.normalize_email(email)
+    user = self.model(username=username, email=email)
     user.set_password(password)
     user.save()
     return user
-  
-  def create_superuser(self, username, password=None):
-    user = self.create_user(username, password)
+
+  def create_superuser(self, username, email, password=None):
+    user = self.create_user(username, email, password)
     user.is_superuser = True
     user.is_staff = True
     user.save()
@@ -62,10 +65,12 @@ Attributes:
 class CustomUser(AbstractBaseUser, PermissionsMixin):
   user_id = models.AutoField(primary_key=True)
   username = models.CharField(max_length=150, unique=True)
+  email = models.EmailField(unique=True)
   is_superuser = models.BooleanField(default=False)
   is_staff = models.BooleanField(default=False)
 
   USERNAME_FIELD = 'username'
+  REQUIRED_FIELDS = ['email']
 
   objects = CustomUserManager()
 
