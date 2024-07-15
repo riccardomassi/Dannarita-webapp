@@ -167,8 +167,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.mailgun.org'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'riccardomassi@sandbox942c8ff2294c41618bcc6851f5c168bd.mailgun.org'
-EMAIL_HOST_PASSWORD = 'f8cab2b93c3a0a04c310f6bfa4725708-8a084751-e1cbe39b'
+EMAIL_HOST_USER = 'mailgun user'
+EMAIL_HOST_PASSWORD = 'mailgun password'
 
 
 
